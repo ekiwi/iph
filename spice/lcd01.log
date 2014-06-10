@@ -1,0 +1,56 @@
+Circuit: * Z:\home\kevin\institus_project\spice\lcd01.asc
+
+V1: Removing PWL point (-0.201,3.91558)
+V1: Removing PWL point (-0.125,3.95578)
+V1: Removing PWL point (-0.104,3.95578)
+V1: Removing PWL point (-0.0740001,3.95578)
+V1: Removing PWL point (-0.0420001,3.91558)
+V1: Removing PWL point (-0.0380001,3.95578)
+V1: Removing PWL point (-0.0320001,3.95578)
+V1: Removing PWL point (-0.0290001,3.99598)
+V1: Removing PWL point (-0.0240001,3.95578)
+V1: Removing PWL point (-0.0200001,3.91558)
+V1: Removing PWL point (-0.0160001,3.91558)
+V1: Removing PWL point (0.666,3.83518)
+V1: Removing PWL point (0.706,3.99598)
+V1: Removing PWL point (0.726,3.91558)
+V1: Removing PWL point (0.729,3.95578)
+V1: Removing PWL point (0.75,3.99598)
+V1: Removing PWL point (0.802,3.91558)
+V1: Removing PWL point (0.864,3.95578)
+V1: Removing PWL point (0.902,3.95578)
+V1: Removing PWL point (0.932,3.95578)
+V1: Removing PWL point (0.941,3.95578)
+V1: Removing PWL point (0.948,3.91558)
+V1: Removing PWL point (0.951,3.95578)
+V1: Removing PWL point (0.96,3.91558)
+V1: Removing PWL point (0.972,3.95578)
+V1: Removing PWL point (0.976,3.99598)
+V1: Removing PWL point (0.985,3.95578)
+V1: Removing PWL point (1.694,3.99598)
+V1: Removing PWL point (1.748,3.95578)
+V1: Removing PWL point (1.758,3.99598)
+WARNING: Node N004 is floating.
+
+Direct Newton iteration for .op point succeeded.
+Heightened Def Con from 0.899286 to 0.899286
+
+Date: Fri May 02 16:48:54 2014
+Total elapsed time: 0.972 seconds.
+
+tnom = 27
+temp = 27
+method = modified trap
+totiter = 19704
+traniter = 19682
+tranpoints = 8135
+accept = 6837
+rejected = 1299
+matrix size = 123
+fillins = 90
+solver = Normal
+Thread vector: 20.5/13.7[3] 8.7/6.0[3] 2.7/2.7[1] 1.4/3.2[1]  2592/500
+Matrix Compiler1: 7.67 KB object code size  5.7/3.0/[1.9]
+Matrix Compiler2: off  [2.6]/3.3/3.0
+
+
