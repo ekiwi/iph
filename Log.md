@@ -13,3 +13,8 @@
 * 10Hz function generator bit patten test
 * toggle pattern recognizable (10Hz_toggle)
 * problems with random patterns (10Hz_random)
+* ERROR: channel 2 was AC coupled which caused misleading results
+
+## 2014-06-10 17:40
+* connected comparator to receiver output to generate digital signal
+* working with 3Hz random patterns (see files in 3Hz_comparator)
