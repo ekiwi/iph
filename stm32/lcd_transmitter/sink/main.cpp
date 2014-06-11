@@ -47,6 +47,7 @@ MAIN_FUNCTION
 		uint8_t data = rx.getResult();
 		LedRed::toggle();
 		XPCC_LOG_INFO << xpcc::endl << "Received: " << data << xpcc::endl;
+		xpcc::delay_ms(500);
 	}
 
 	return 0;

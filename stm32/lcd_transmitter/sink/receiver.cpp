@@ -7,7 +7,8 @@
 
 using namespace xpcc::stm32;
 
-typedef GpioInputA5 ReceivePin;
+typedef xpcc::GpioInverted<GpioInputA5> ReceivePin;
+typedef GpioOutputA7 SampleIndicator;
 
 
 Receiver::Receiver()
@@ -20,6 +21,7 @@ void
 Receiver::initialize()
 {
 	ReceivePin::setInput();
+	SampleIndicator::setOutput(xpcc::Gpio::High);
 }
 
 
@@ -43,7 +45,10 @@ Receiver::run()
 	// receive bits
 	ii = 0;
 	while(ii < 7) {
+		++ii;
+
 		bit = ReceivePin::read();
+		SampleIndicator::toggle();
 		if(bit) XPCC_LOG_DEBUG << "1";
 		else XPCC_LOG_DEBUG << "0";
 		data = (data << 1) | (bit? 1 : 0);
@@ -54,6 +59,7 @@ Receiver::run()
 
 	// sample stopbit
 	bit = ReceivePin::read();
+	SampleIndicator::toggle();
 	if(bit) {
 		XPCC_LOG_DEBUG << "]";
 	} else {
