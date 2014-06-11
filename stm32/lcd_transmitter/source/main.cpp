@@ -40,12 +40,16 @@ MAIN_FUNCTION
 
 	tx.initialize();
 
+	xpcc::delay_ms(5000);
+
 	while (1)
 	{
 		for(int ii = 0; ii < 16; ++ii) {
 			tx.send(ii);
 			while(tx.run());
 			LedNorth::toggle();
+
+			xpcc::delay_ms(2000);
 		}
 		xpcc::delay_ms(Settings::SendValuesDelay);
 	}

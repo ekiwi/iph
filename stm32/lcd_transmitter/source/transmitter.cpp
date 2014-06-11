@@ -42,7 +42,7 @@ Transmitter::run()
 	while(ii < 7) {
 		++ii;
 
-		bit = static_cast<bool>(data & 0x1);
+		bit = static_cast<bool>(data & (1<<6));
 		// Send single bit
 		SendPin::set(bit);
 		if(bit) XPCC_LOG_DEBUG << "1";
@@ -50,7 +50,7 @@ Transmitter::run()
 
 		PT_WAIT_UNTIL(delay.isExpired());
 
-		data = data >> 1;
+		data = data << 1;
 	}
 
 	// send stopbit
