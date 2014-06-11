@@ -1,6 +1,8 @@
 #ifndef HAMMING_HPP
 #define HAMMING_HPP
 
+#include <xpcc/debug/logger.hpp>
+
 namespace Hamming
 {
 
@@ -52,6 +54,9 @@ decode(uint8_t data) {
 			index = ii;
 		}
 	}
+	
+	XPCC_LOG_DEBUG << xpcc::endl << "Minimum Hamming distance: " << min_distance
+		<< xpcc::endl;
 	return index;
 }
 
