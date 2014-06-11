@@ -4,11 +4,12 @@
 
 namespace Settings
 {
-	static constexpr int BitDelay = 500;
-	static constexpr int PrefixDelay = 1000;
-	static constexpr int SendValuesDelay = 10000;
+	static constexpr int   BitPeriod   = 500;
+	static constexpr float SampleTime = 0.5f;	// as a percentage of one bit period
+	static constexpr int   ReceiveStartDelay = BitPeriod + static_cast<int>(SampleTime * BitPeriod);
 
-	static constexpr uint8_t Prefix = 0b1010101;
+
+	static constexpr int SendValuesDelay = 10000;
 }
 
 #endif // SETTINGS_HPP

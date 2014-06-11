@@ -31,7 +31,7 @@ Transmitter::run()
 
 	PT_BEGIN();
 
-	delay.restart(Settings::BitDelay);
+	delay.restart(Settings::BitPeriod);
 
 	// send startbit
 	SendPin::reset();
@@ -57,6 +57,7 @@ Transmitter::run()
 	SendPin::set();
 	PT_WAIT_UNTIL(delay.isExpired());
 
+	delay.restart(0);	// stop delay
 	PT_END();
 }
 
