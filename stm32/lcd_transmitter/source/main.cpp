@@ -1,9 +1,8 @@
 #include <xpcc/architecture/platform.hpp>
-#include "../../../../rca/software/xpcc/examples/stm32f4_discovery/stm32f4_discovery.hpp"
-
-
-
+#include "../../../../xpcc/examples/stm32f3_discovery/stm32f3_discovery.hpp"
 #include <xpcc/debug/logger.hpp>
+#include "../settings.hpp"
+#include "transmitter.hpp"
 
 // ----------------------------------------------------------------------------
 // Set the log level
@@ -21,55 +20,16 @@ xpcc::log::Logger xpcc::log::warning(loggerDevice);
 xpcc::log::Logger xpcc::log::error(loggerDevice);
 
 
-typedef GpioOutputA5 SendPin;
-
-static constexpr int BitDelay = 500;
-static constexpr int PrefixDelay = 1000;
-static constexpr int SendValuesDelay = 10000;
-
-static void
-sendBit(bool bit) {
-	SendPin::set(bit);
-	if(bit) XPCC_LOG_DEBUG << "1";
-	else XPCC_LOG_DEBUG << "0";
-	xpcc::delay_ms(BitDelay);
-}
-
-static void
-send(uint8_t data) {
-	for(int ii = 0; ii < 7; ++ii) {
-		sendBit(static_cast<bool>(data & 0x1));
-		data = data >> 1;
-	}
-}
-
-static void
-sendPrefix() {
-	XPCC_LOG_DEBUG << "[p";
-	send(0b1010101);
-	SendPin::reset();
-	XPCC_LOG_DEBUG << "p]";
-	xpcc::delay_ms(PrefixDelay);
-}
-
-
-
-static void
-sendData(uint8_t data) {
-	XPCC_LOG_DEBUG << xpcc::endl << "Send: " << data << xpcc::endl;
-	send(encode(data));
-}
-
+Transmitter tx;
 
 // ----------------------------------------------------------------------------
 MAIN_FUNCTION
 {
 	defaultSystemClock::enable();
 
-	LedOrange::setOutput(xpcc::Gpio::High);
-	LedGreen::setOutput(xpcc::Gpio::Low);
-	LedRed::setOutput(xpcc::Gpio::High);
-	LedBlue::setOutput(xpcc::Gpio::High);
+	xpcc::cortex::SysTickTimer::enable();
+
+	LedNorth::setOutput(xpcc::Gpio::High);
 
 
 	// initialize Uart2 for XPCC_LOG_
@@ -78,15 +38,18 @@ MAIN_FUNCTION
 	Usart2::initialize<defaultSystemClock, 115200>(12);
 
 
-	SendPin::setOutput();
+	tx.initialize();
 
 	while (1)
 	{
-		sendPrefix();
+		tx.sendPrefix();
+		while(tx.run());
 		for(int ii = 0; ii < 16; ++ii) {
-			sendData(ii);
+			tx.sendData(ii);
+			while(tx.run());
+			LedNorth::toggle();
 		}
-		xpcc::delay_ms(SendValuesDelay);
+		xpcc::delay_ms(Settings::SendValuesDelay);
 	}
 
 	return 0;
