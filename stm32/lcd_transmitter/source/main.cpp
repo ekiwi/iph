@@ -42,10 +42,8 @@ MAIN_FUNCTION
 
 	while (1)
 	{
-		tx.sendPrefix();
-		while(tx.run());
 		for(int ii = 0; ii < 16; ++ii) {
-			tx.sendData(ii);
+			tx.send(ii);
 			while(tx.run());
 			LedNorth::toggle();
 		}

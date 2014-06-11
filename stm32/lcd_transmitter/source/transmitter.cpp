@@ -19,7 +19,7 @@ Transmitter::Transmitter()
 void
 Transmitter::initialize()
 {
-	SendPin::setOutput(xpcc::Gpio::Low);
+	SendPin::setOutput(xpcc::Gpio::High);
 }
 
 
@@ -33,6 +33,11 @@ Transmitter::run()
 
 	delay.restart(Settings::BitDelay);
 
+	// send startbit
+	SendPin::reset();
+	PT_WAIT_UNTIL(delay.isExpired());
+
+	// send 7 databits
 	ii = 0;
 	while(ii < 7) {
 		++ii;
@@ -48,25 +53,16 @@ Transmitter::run()
 		data = data >> 1;
 	}
 
-	PT_END(); // return is in included in PT_END();
-}
+	// send stopbit
+	SendPin::set();
+	PT_WAIT_UNTIL(delay.isExpired());
 
-void
-Transmitter::sendPrefix() {
-	if(this->isRunning()) {
-		XPCC_LOG_ERROR << "Cannot send Data. Not finished!" << xpcc::endl;
-		return;
-	}
-
-	XPCC_LOG_DEBUG << "[p:";
-	this->data = Settings::Prefix;
-	this->restart();
+	PT_END();
 }
 
 
-
 void
-Transmitter::sendData(uint8_t data) {
+Transmitter::send(uint8_t data) {
 	if(this->isRunning()) {
 		XPCC_LOG_ERROR << "Cannot send Data. Not finished!" << xpcc::endl;
 		return;

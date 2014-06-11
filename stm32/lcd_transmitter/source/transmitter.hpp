@@ -16,10 +16,7 @@ public:
 	run();
 
 	void
-	sendPrefix();
-
-	void
-	sendData(uint8_t);
+	send(uint8_t);
 
 private:
 
