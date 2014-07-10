@@ -3,6 +3,9 @@
 
 #include <xpcc/debug/logger.hpp>
 
+#undef	XPCC_LOG_LEVEL
+#define	XPCC_LOG_LEVEL xpcc::log::INFO
+
 namespace Hamming
 {
 
@@ -54,7 +57,7 @@ decode(uint8_t data) {
 			index = ii;
 		}
 	}
-	
+	XPCC_LOG_INFO << min_distance << ",";
 	XPCC_LOG_DEBUG << xpcc::endl << "Minimum Hamming distance: " << min_distance
 		<< xpcc::endl;
 	return index;

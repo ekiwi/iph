@@ -1,13 +1,15 @@
 #include <xpcc/architecture/platform.hpp>
 #include "../../../../xpcc/examples/stm32f4_discovery/stm32f4_discovery.hpp"
 #include <xpcc/debug/logger.hpp>
-#include "../settings.hpp"
-#include "receiver.hpp"
+
 
 // ----------------------------------------------------------------------------
 // Set the log level
 #undef	XPCC_LOG_LEVEL
-#define	XPCC_LOG_LEVEL xpcc::log::DEBUG
+#define	XPCC_LOG_LEVEL xpcc::log::INFO
+
+#include "../settings.hpp"
+#include "receiver.hpp"
 
 
 // Create an IODeviceWrapper around the Uart Peripheral we want to use
@@ -46,8 +48,8 @@ MAIN_FUNCTION
 		while(rx.run());
 		uint8_t data = rx.getResult();
 		LedRed::toggle();
-		XPCC_LOG_INFO << xpcc::endl << "Received: " << data << xpcc::endl;
-		xpcc::delay_ms(500);
+		//XPCC_LOG_INFO << xpcc::endl << "Received: " << data << xpcc::endl;
+		XPCC_LOG_INFO << data << xpcc::endl;
 	}
 
 	return 0;

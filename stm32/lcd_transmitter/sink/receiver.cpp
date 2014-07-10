@@ -11,6 +11,9 @@ typedef xpcc::GpioInverted<GpioInputA5> ReceivePin;
 typedef GpioOutputA7 SampleIndicator;
 
 
+#undef	XPCC_LOG_LEVEL
+#define	XPCC_LOG_LEVEL xpcc::log::INFO
+
 Receiver::Receiver()
 : delay(0)
 {

@@ -48,8 +48,6 @@ MAIN_FUNCTION
 			tx.send(ii);
 			while(tx.run());
 			LedNorth::toggle();
-
-			xpcc::delay_ms(2000);
 		}
 		xpcc::delay_ms(Settings::SendValuesDelay);
 	}
