@@ -29,4 +29,5 @@
 ## 2014-07-10
 * tried to improve transmitter with 50 Ohm resistor to ground
   -> reflections gone but still no better transmission
+* transmitter with 1MHz of data working well
 
