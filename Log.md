@@ -18,3 +18,15 @@
 ## 2014-06-10 17:40
 * connected comparator to receiver output to generate digital signal
 * working with 3Hz random patterns (see files in 3Hz_comparator)
+
+## 2014-07-03
+* built current source that can be modulated using two transistors
+* tested, working fine up to 100kHz
+* sending seems to work fine, but receiving poses some problems
+  (see measurements)
+
+
+## 2014-07-10
+* tried to improve transmitter with 50 Ohm resistor to ground
+  -> reflections gone but still no better transmission
+
