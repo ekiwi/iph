@@ -3,3 +3,6 @@
 
 build/
 .sconsign.dblite
+
+# Libre Office lock files
+.~*
