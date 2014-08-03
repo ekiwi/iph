@@ -6,3 +6,15 @@ build/
 
 # Libre Office lock files
 .~*
+
+# Tex Files
+*.aux
+*.log
+*.pdf
+*.synctex.gz
+*.toc
+*.out
+
+# Latex MK
+*.fdb_latexmk
+*.fls
