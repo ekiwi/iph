@@ -14,6 +14,7 @@ build/
 *.synctex.gz
 *.toc
 *.out
+*.dvi
 
 # Latex MK
 *.fdb_latexmk
