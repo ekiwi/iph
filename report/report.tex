@@ -19,6 +19,9 @@
 \section{Aufgabenstellung}
 
 \section{Extern modulierter Laser}
+Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu übertragen, muss mindestens ein Parameter des Laserstrahls extern moduliert werden. Mögliche Modulationsparameter sind beispielsweise die Amplitude oder die Phase des Strahls. In unseren Versuchen kam ausschließlich Amplitudenmodulation zum Einsatz.
+
+Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederum verschiedene Aufbauten als Modulatoren denkbar. Ein Lautsprecher mit einem in der Mitte der Membran angebrachten kleinen Spiegel kann je nach Auslenkung der Lautsprechermembran die Intensität des auf der Photodiode des Empfängers auftreffenden Lichts verändern; mit dieser Technik hat sich eine zweite Projektgruppe genauer beschäftigt. Wir haben uns stattdessen für die Variante entschieden, bei der ein einzelner LCD-Pixel (engl. liquid crystal display) zum Einsatz kommt.
 
 \subsection{LCD-Modul als Modulator}
 \begin{itemize}
@@ -26,6 +29,12 @@
 \item Versuchsaufbau beschreiben
 \item Resultate Übertragungsfunktion
 \end{itemize}
+Ein einzelner Pixel eines LCD besteht üblicherweise aus einer Flüssigkristallschicht, an die über zwei Elektroden ein elektrisches Feld angelegt werden kann, sowie einem horizontalen und einem vertikalen Polarisationsfilter, je einer vor und einer hinter der Kristallschicht.
+
+Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter zusammen das gesamte einfallende Licht herausfiltern. Die zusätzliche Kristallschicht zwischen beiden Filtern sorgt nun für eine Drehung der Polarisation des durch den ersten Filter polarisierten Lichts. Da sich die Ausrichtung der Kristalle über das angelegte Feld bzw. über die angelegte Spannung steuern lässt, lässt sich somit auch die Menge des insgesamt durchgelassenen Lichts steuern.
+
+Da in unserem Aufbau die Lichtquelle bereits polarisiertes Laserlicht aussendet, ist der erste Polarisationsfilter überflüssig.
+
 
 \subsection{Übertragung von Audiosignalen}
 \begin{itemize}
