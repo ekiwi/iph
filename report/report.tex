@@ -3,6 +3,7 @@
 \usepackage[german]{babel}
 \usepackage{german}
 \usepackage{hyperref,ulem,setspace}
+\usepackage{graphicx}
 \normalem
 
 \title{Projektbericht}
@@ -34,14 +35,62 @@
 
 \subsection{Übertragung digitaler Daten}
 
+
+
+
+
 \section{Direkt modulierter Laser}
-\subsection{Sender}
+Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
+
+Unser Ziel war es eine Stromquelle direkt mit einem Datensignal zu modulieren und danach Empfängerdesigns zu evaluieren.
+
+
+\subsection{Sender: modulierte Konstantstromquelle}
+Auf Grund der exponentiellen Kennlinie einer Laserdiode muss diese mit einem konstanten Strom versorgt werden. Eine einfache Konstantstromquelle kann mit zwei Bipolartransisoren aufgebaut werden. Der Strom $I_{D1}$ , der durch die Diode fließt entspricht hierbei in etwa dem Strom $I_{R1}$, der durch den Widerstand $R1$ fließt. An diesem müssen, durch den Transistor  $Q2$ vorgegeben, etwa $0.7V$ abfallen, wodurch sich ungefähr folgender Strom einstellt:
+
+\begin{equation}
+I_{D1} = I_{R1} = \frac{U_{R1}}{R1} \approx \frac{0.7V}{R1}
+\end{equation}
+
+Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widerstand - die Kollektor-Emitter-Spannung $U_{CE2}$ des Transistor $Q2$ vorgegeben wird. Dieser Aufbau ist in Abbildung~\ref{fig:modulated_current_source} zu sehen.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.8\textwidth]{../spice/modulated_current_source.png}
+  \caption{Modulierte Stromquelle.}
+  \label{fig:modulated_current_source}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=1.0\textwidth]{../spice/current_input_v_current_out_trans.png}
+  \caption{Transientenanalyse der modulierten Stromquelle.}
+  \label{fig:modulated_current_source_plot}
+\end{figure}
+
+
+Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die Diode von der Eingangsspannung $U_2$ abhängt. Die in Abbildung~\ref{fig:modulated_current_source_plot} dargestellten Ergebnisse wurde aber mit einem vereinfachten Transistormodell simuliert, sind also mit Vorsicht zu genießen. Das Prinzip wird darin aber gut veranschaulicht.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=1.0\textwidth]{img/ring_20MHz.png}
+  \caption{Reflexionen bei einem $20MHz$ Eingangssignal.}
+  \label{fig:ring_20mhz}
+\end{figure}
+
+Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:receiver}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant.
+
+
+
+
+
 \begin{itemize}
 \item Schaltung erklären
 \item Reflexionen
 \end{itemize}
 
 \subsection{Empfänger}
+\label{sec:receiver}
 \begin{itemize}
 \item Schaltung erklären
 \item Vergleich Ausgangspegel/Geschwindigkeit 10k Ohm vs 50 Ohm
