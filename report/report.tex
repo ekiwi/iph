@@ -4,6 +4,8 @@
 \usepackage{german}
 \usepackage{hyperref,ulem,setspace}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \normalem
 
 \title{Projektbericht}
@@ -55,6 +57,7 @@ Unser Ziel war es eine Stromquelle direkt mit einem Datensignal zu modulieren un
 
 
 \subsection{Sender: modulierte Konstantstromquelle}
+\label{sec:direct_tx}
 Auf Grund der exponentiellen Kennlinie einer Laserdiode muss diese mit einem konstanten Strom versorgt werden. Eine einfache Konstantstromquelle kann mit zwei Bipolartransisoren aufgebaut werden. Der Strom $I_{D1}$ , der durch die Diode fließt entspricht hierbei in etwa dem Strom $I_{R1}$, der durch den Widerstand $R1$ fließt. An diesem müssen, durch den Transistor  $Q2$ vorgegeben, etwa $0.7V$ abfallen, wodurch sich ungefähr folgender Strom einstellt:
 
 \begin{equation}
@@ -87,27 +90,56 @@ Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die 
   \label{fig:ring_20mhz}
 \end{figure}
 
-Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:receiver}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant.
-
-
-
-
-
-\begin{itemize}
-\item Schaltung erklären
-\item Reflexionen
-\end{itemize}
+Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:direct_rx}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant.
 
 \subsection{Empfänger}
-\label{sec:receiver}
+\label{sec:direct_rx}
+
+
+
+
 \begin{itemize}
 \item Schaltung erklären
 \item Vergleich Ausgangspegel/Geschwindigkeit 10k Ohm vs 50 Ohm
 \end{itemize}
 
-\subsection{Übertragung digitaler Daten / Augendiagramme}
+\subsection{Augendiagramme}
+Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.7\textwidth]{../photos/IMG_20140710_184030.jpg}
+  \caption{Versuchsaufbau zur Bestimmung der Augendiagramme.}
+  \label{fig:eye_setup}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/01MHz.png}
+    \caption{$1MHz$}
+  \end{subfigure}  
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/10MHz.png}
+    \caption{$10MHz$}
+  \end{subfigure}  
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/30MHz.png}
+    \caption{$30MHz$}
+  \end{subfigure}  
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/50MHz.png}
+    \caption{$50MHz$}
+  \end{subfigure}  
+  \caption{Augendiagramme}
+  \label{fig:eye_plots}
+\end{figure}
+
+In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
+
+Ein $1MHz$ Bitsignal wird ohne Probleme übertragen, auch bei einem $10MHz$ Signal ist die Augenöffnung noch unproblematisch. Ein $30MHz$ Signal hat bereits eine deutlich kleiner Öffnung, sollte aber auch noch funktionieren. Bei einem $50MHz$ Signal scheint die Grenze erreicht; hier ist keine distinkte Öffnung mehr zu erkennen. 
+
 \begin{itemize}
-\item Erklärung Augendiagramme
 \item Vergleich Photodiode und integrierter Transimpedanzverstärker
 \item Besprechen der Resultate
 \end{itemize}
