@@ -3,9 +3,9 @@
 \usepackage[german]{babel}
 \usepackage{german}
 \usepackage{hyperref,ulem,setspace}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
+\usepackage{caption,subcaption}
+\usepackage{graphicx,pgfplots}
+\pgfplotsset{compat=1.9}
 \normalem
 
 \title{Projektbericht}
@@ -23,7 +23,7 @@
 \section{Extern modulierter Laser}
 Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu übertragen, muss mindestens ein Parameter des Laserstrahls extern moduliert werden. Mögliche Modulationsparameter sind beispielsweise die Amplitude oder die Phase des Strahls. In unseren Versuchen kam ausschließlich Amplitudenmodulation zum Einsatz.
 
-Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederum verschiedene Aufbauten als Modulatoren denkbar. Ein Lautsprecher mit einem in der Mitte der Membran angebrachten kleinen Spiegel kann je nach Auslenkung der Lautsprechermembran die Intensität des auf der Photodiode des Empfängers auftreffenden Lichts verändern; mit dieser Technik hat sich eine zweite Projektgruppe genauer beschäftigt. Wir haben uns stattdessen für die Variante entschieden, bei der ein einzelner LCD-Pixel (engl. liquid crystal display) zum Einsatz kommt.
+Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederum verschiedene Aufbauten als Modulator denkbar. Ein Lautsprecher mit einem in der Mitte der Membran angebrachten kleinen Spiegel kann je nach Auslenkung der Membran die Intensität des auf der Photodiode des Empfängers auftreffenden Lichts verändern; mit dieser Technik hat sich eine zweite Projektgruppe genauer beschäftigt. Wir haben uns stattdessen für die Variante entschieden, bei der ein einzelner LCD-Pixel (engl. \textit{liquid crystal display}) zum Einsatz kommt.
 
 \subsection{LCD-Modul als Modulator}
 \begin{itemize}
@@ -35,7 +35,22 @@ Ein einzelner Pixel eines LCD besteht üblicherweise aus einer Flüssigkristalls
 
 Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter zusammen das gesamte einfallende Licht herausfiltern. Die zusätzliche Kristallschicht zwischen beiden Filtern sorgt nun für eine Drehung der Polarisation des durch den ersten Filter polarisierten Lichts. Da sich die Ausrichtung der Kristalle über das angelegte Feld bzw. über die angelegte Spannung steuern lässt, lässt sich somit auch die Menge des insgesamt durchgelassenen Lichts steuern.
 
-Da in unserem Aufbau die Lichtquelle bereits polarisiertes Laserlicht aussendet, ist der erste Polarisationsfilter überflüssig.
+Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das in den Modulator einfallende Licht bereits polarisiert. Der von uns verwendete LCD-Pixel musste daher nur über einen Polarisationsfilter hinter der Kristallschicht verfügen.
+
+\begin{tikzpicture}
+\begin{semilogxaxis}[
+	xticklabel style={
+		/pgf/number format/precision=3,
+    /pgf/number format/fixed,
+    /pgf/number format/fixed zerofill,
+  },
+  xlabel=Frequenz,
+  ylabel={Spannung [dB]},
+  width=1.0\textwidth
+]
+\addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
+\end{semilogxaxis}
+\end{tikzpicture}
 
 
 \subsection{Übertragung von Audiosignalen}
