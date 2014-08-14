@@ -38,18 +38,24 @@ Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter 
 Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das in den Modulator einfallende Licht bereits polarisiert. Der von uns verwendete LCD-Pixel musste daher nur über einen Polarisationsfilter hinter der Kristallschicht verfügen.
 
 \begin{tikzpicture}
-\begin{semilogxaxis}[
-	xticklabel style={
-		/pgf/number format/precision=3,
-    /pgf/number format/fixed,
-    /pgf/number format/fixed zerofill,
-  },
-  xlabel=Frequenz,
-  ylabel={Spannung [dB]},
-  width=1.0\textwidth
-]
-\addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
-\end{semilogxaxis}
+  \begin{semilogxaxis}[
+    log ticks with fixed point,
+  	xticklabel style={
+      /pgf/number format/.cd,precision=3,fixed,fixed zerofill
+    },
+    xlabel={Frequenz [Hz]},
+    ylabel={Spannung [dB]},
+    xmin=9.1,
+    xmax=1200,
+    ymin=0,
+    ymax=65,
+    width=1.0\textwidth,
+    height=0.6\textwidth,
+    axis x line=bottom,
+    axis y line=left
+  ]
+  \addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
+  \end{semilogxaxis}
 \end{tikzpicture}
 
 
