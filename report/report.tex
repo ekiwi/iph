@@ -108,18 +108,34 @@ Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die 
   \label{fig:ring_20mhz}
 \end{figure}
 
-Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:direct_rx}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant.
+Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:direct_rx}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant. Auch verhält sich die Schaltung bei Frequenzen im Megahertzbereich nicht genauso wie in der Simulation, so entspricht die Spannung am Widerstand $R1$ nicht den erwarteten $0.7V$. Hier wären eine Verbesserung der Spice Simulation durch die Auswahl eines passenden Transistormodells und bessere Modellierung der Quelle sowie weitere empirische Versuche angebracht.
 
-\subsection{Empfänger}
+\subsection{Photodiode mit Lastwiderstand als Empfänger}
 \label{sec:direct_rx}
 
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140703/20kHz_10kOhm/scope_2.png}
+    \caption{$10k\Omega$}
+    \label{fig:direct_rx_10k_R}
+  \end{subfigure}  
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140703/20kHz_50_Ohm/scope_0.png}
+    \caption{$50\Omega$}
+    \label{fig:direct_rx_50_R}
+  \end{subfigure}  
+  \caption{$20kHz$ Eingangssignal mit unterschiedlichem Lastwiderstand}
+  \label{fig:direct_rx}
+\end{figure}
 
+Als Empfänger nutzten wir zunächst, zum Testen der Sendeschaltung, eine Photodiode mit Biasspannung und umschaltbaren Lastwiderstand von ThorLabs (\textbf{??Typenbezeichnung??}).
 
+In der Abbildung~\ref{fig:direct_rx} kann man die Abhängigkeit des Ausgangssignals vom Lastwiderstand sehen. Dazu wurde der Ausgang der Photodiode mit einem hochohmig terminierten Eingang eines Oszilloskops verbunden und auf den Eingang unserer Sendeschaltung~\ref{sec:direct_tx} ein $20kHz$ Rechtecksignal gegeben. Bei einem hohen Lastwiderstand (\ref{fig:direct_rx_10k_R}) erhöht sich die Verstärkung: die Amplitude ist hier in etwa $10mV$. Jedoch sinkt die Bandbreite, was sich an sehr langen Anstiegs- und Abfallzeiten und der daraus resultierenden Dreiecksform des Ausgangssignals bemerkbar macht. Mit einem kleineren Lastwiderstand (\ref{fig:direct_rx_50_R}) ergibt sich ein weniger verzerrtes Signal, die Amplitude beträgt jedoch nur noch in etwa $1mV$.
 
-\begin{itemize}
-\item Schaltung erklären
-\item Vergleich Ausgangspegel/Geschwindigkeit 10k Ohm vs 50 Ohm
-\end{itemize}
+Die kleinen Amplituden und die Verzerrung beim Empfang eines $20kHz$ Signals weisen darauf hin, dass für schnellere Signale ein besserer Verstärker benötigt wird.
+
+\subsection{Empfänger mit integriertem \textit{AD8015} Transimpedanzverstärker}
 
 \subsection{Augendiagramme}
 Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
@@ -156,6 +172,11 @@ Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der T
 In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
 
 Ein $1MHz$ Bitsignal wird ohne Probleme übertragen, auch bei einem $10MHz$ Signal ist die Augenöffnung noch unproblematisch. Ein $30MHz$ Signal hat bereits eine deutlich kleiner Öffnung, sollte aber auch noch funktionieren. Bei einem $50MHz$ Signal scheint die Grenze erreicht; hier ist keine distinkte Öffnung mehr zu erkennen. 
+
+\subsection{Ergebnisse}
+
+
+
 
 \begin{itemize}
 \item Vergleich Photodiode und integrierter Transimpedanzverstärker
