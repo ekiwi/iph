@@ -3,7 +3,7 @@
 \usepackage{siunitx}
 \usepackage{hyperref,ulem,setspace}
 \usepackage{caption,subcaption}
-\usepackage{graphicx,pgfplots}
+\usepackage{graphicx,pgfplots,pgf-pie}
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage[german]{babel}
@@ -11,7 +11,7 @@
 \pgfplotsset{compat=1.9}
 \normalem
 
-\title{Projektbericht}
+\title{Institutsprojekt: Optischer Link}
 \author{R. Brandis \and K. Läufer}
 \date{\today}
 
@@ -82,9 +82,58 @@ Aufgrund der in Abschnitt \ref{sec:lcd_transfer_characteristics} erläuterten Ve
 
 \subsection{Übertragung digitaler Daten}
 
+\subsubsection{USB zu UART Dongle}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=\textwidth]{../measurements/20140610/uart_continous_key/scope_0.png}
+  \caption{Hier wird kontinuierlich der gleiche Wert mittels UART gesendet.}
+  \label{fig:uart_continous_key}
+\end{figure}
+
+\subsubsection{10 Hz Daten}
 
 
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140610/10Hz_toggle/scope_6.png}
+    \caption{toggle}
+    \label{fig:uart_10hz_toggle}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140610/10Hz_random/scope_4.png}
+    \caption{zufällig}
+    \label{fig:uart_10hz_random}
+  \end{subfigure}
+  \caption{\SI{10}{\hertz} Signal}
+\end{figure}
 
+\subsubsection{Software UART mit Mikrocontroller}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140611/4Hz_rising_edge/scope_2.png}
+    \caption{steigende Flanke: \SI{162}{\milli\second}}
+    \label{fig:uart_4hz_rising_edge}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{../measurements/20140611/4Hz_falling_edge/scope_6.png}
+    \caption{fallende Flanke: \SI{20}{\milli\second}}
+    \label{fig:uart_4hz_falling_edge}
+  \end{subfigure}
+  \caption{Verzögerung bei einem \SI{4}{\hertz} UART Signal}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \begin{tikzpicture}
+    \pie[explode=0.1,color={green,yellow,orange}]{26/0 Fehler, 62/1 Fehler, 12/2+ Fehler}
+    \end{tikzpicture}
+  \caption{Übertragungsfehler bei einem \SI{4}{\hertz} UART Signal mit Hamming (7,4) Code}
+  \label{fig:sotware_uart_errors}
+\end{figure}
 
 
 \section{Direkt modulierter Laser}
@@ -103,14 +152,14 @@ I_{D1} = I_{R1} = \frac{U_{R1}}{R1} \approx \frac{\SI{0.7}{\volt}}{R1}
 
 Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widerstand - die Kollektor-Emitter-Spannung $U_{CE2}$ des Transistor $Q2$ vorgegeben wird. Dieser Aufbau ist in Abbildung~\ref{fig:modulated_current_source} zu sehen.
 
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{../spice/modulated_current_source.png}
   \caption{Modulierte Stromquelle.}
   \label{fig:modulated_current_source}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
     \includegraphics[width=1.0\textwidth]{../spice/current_input_v_current_out_trans.png}
   \caption{Transientenanalyse der modulierten Stromquelle.}
@@ -120,7 +169,7 @@ Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widers
 
 Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die Diode von der Eingangsspannung $U_2$ abhängt. Die in Abbildung~\ref{fig:modulated_current_source_plot} dargestellten Ergebnisse wurde aber mit einem vereinfachten Transistormodell simuliert, sind also mit Vorsicht zu genießen. Das Prinzip wird darin aber gut veranschaulicht.
 
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
     \includegraphics[width=1.0\textwidth]{img/ring_20MHz.png}
   \caption{Reflexionen bei einem \SI{20}{\mega\hertz} Eingangssignal.}
@@ -132,7 +181,7 @@ Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bit
 \subsection{Photodiode mit Lastwiderstand als Empfänger}
 \label{sec:direct_rx}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140703/20kHz_10kOhm/scope_2.png}
@@ -158,7 +207,7 @@ Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz
 Anstatt selbst eine Empfängerschaltung aufzubauen, bietet es sich an, einen integrierten Transimpedanzverstärker wie den \textit{AD8015} zu benutzen. Dieser ist von Grund auf dazu konzipiert, den Photostrom in eine proportional verstärkte Spannung zu wandeln, welche differentiell mit 50 Ohm Impedanz am Ausgang abgegriffen werden kann. Dieser benötigt nur wenige externe Komponenten was zu einer einfachen Schaltung führt (\ref{fig:receiver_sch})
 
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
     \includegraphics[width=0.7\textwidth]{img/receiver.pdf}
   \caption{Beschaltung des \textit{AD8015} Transimpedanzverstärkers}
@@ -171,7 +220,7 @@ Mit diesem Aufbau lassen sich auch schnelle Signale verstärken was in der Betra
 \subsection{Augendiagramme}
 Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
     \includegraphics[width=0.7\textwidth]{../photos/IMG_20140710_184030.jpg}
   \caption{Versuchsaufbau zur Bestimmung der Augendiagramme.}
@@ -180,7 +229,7 @@ Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der T
 
 In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} und Abbildung~\ref{fig:eye_plots_fast} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
 
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/01MHz.png}
@@ -194,7 +243,7 @@ In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} 
   \label{fig:eye_plots_slow}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/30MHz.png}
