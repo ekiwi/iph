@@ -90,14 +90,14 @@ I_{D1} = I_{R1} = \frac{U_{R1}}{R1} \approx \frac{\SI{0.7}{\volt}}{R1}
 
 Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widerstand - die Kollektor-Emitter-Spannung $U_{CE2}$ des Transistor $Q2$ vorgegeben wird. Dieser Aufbau ist in Abbildung~\ref{fig:modulated_current_source} zu sehen.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \centering
     \includegraphics[width=0.8\textwidth]{../spice/modulated_current_source.png}
   \caption{Modulierte Stromquelle.}
   \label{fig:modulated_current_source}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \centering
     \includegraphics[width=1.0\textwidth]{../spice/current_input_v_current_out_trans.png}
   \caption{Transientenanalyse der modulierten Stromquelle.}
@@ -107,7 +107,7 @@ Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widers
 
 Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die Diode von der Eingangsspannung $U_2$ abhängt. Die in Abbildung~\ref{fig:modulated_current_source_plot} dargestellten Ergebnisse wurde aber mit einem vereinfachten Transistormodell simuliert, sind also mit Vorsicht zu genießen. Das Prinzip wird darin aber gut veranschaulicht.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \centering
     \includegraphics[width=1.0\textwidth]{img/ring_20MHz.png}
   \caption{Reflexionen bei einem \SI{20}{\mega\hertz} Eingangssignal.}
@@ -165,7 +165,9 @@ Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der T
   \label{fig:eye_setup}
 \end{figure}
 
-\begin{figure}[h]
+In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} und Abbildung~\ref{fig:eye_plots_fast} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
+
+\begin{figure}[!h]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/01MHz.png}
@@ -175,6 +177,12 @@ Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der T
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/10MHz.png}
     \caption{\SI{10}{\mega\hertz}}
   \end{subfigure}  
+  \caption{Augendiagramme}
+  \label{fig:eye_plots_slow}
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/30MHz.png}
     \caption{\SI{30}{\mega\hertz}}
@@ -184,22 +192,19 @@ Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der T
     \caption{\SI{50}{\mega\hertz}}
   \end{subfigure}  
   \caption{Augendiagramme}
-  \label{fig:eye_plots}
+  \label{fig:eye_plots_fast}
 \end{figure}
 
-In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
+
 
 Ein \SI{1}{\mega\hertz} Bitsignal wird ohne Probleme übertragen, auch bei einem \SI{10}{\mega\hertz} Signal ist die Augenöffnung noch unproblematisch. Ein \SI{30}{\mega\hertz} Signal hat bereits eine deutlich kleiner Öffnung, sollte aber auch noch funktionieren. Bei einem \SI{50}{\mega\hertz} Signal scheint die Grenze erreicht; hier ist keine distinkte Öffnung mehr zu erkennen. 
 
 \subsection{Ergebnisse}
+Mit dem System aus selbst gebauter modulierbarer Stromquelle und \textit{AD8015} Verstärker lassen sich mit Signale mit einer Geschwindigkeit von bis zu \SI{50}{\mega\hertz} gut übertragen. Die Diode ohne Verstärker ist in diesem Geschwindigkeitsbereich eher nicht mehr zu gebrauchen.
 
+Bezüglich der Sendeschaltung sollte man als nächstes versuchen, diese, wie oben genannt, zu verbessern um dann eine Platine mit dieser aufzubauen. Zusammen mit einem Gehäuse lässt sich damit ein Versuchsaufbau erstellen, mit dem die Schaltung noch besser untersucht und der Laser auch in eine Glasfaser eingekoppelt werden kann.
 
-
-
-\begin{itemize}
-\item Vergleich Photodiode und integrierter Transimpedanzverstärker
-\item Besprechen der Resultate
-\end{itemize}
+Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal nicht verändert werden. Es wäre aber interessant diesen noch besser zu vermessen. Unter anderem sollte mit einer professionellen Lichtquelle untersucht werden, bis zu welchen Frequenzen verstärkt werden kann. Bisher wurde hier nur das Gesamtsystem aus Empfänger und Sender untersucht, was es erschwert, eindeutige Aussagen über die Einzelkomponente zu machen. Interessant könnte es auch sein, die \textit{AD8015} Schaltung mit verschiedenen Photodioden aufzubauen und zu untersuchen, wie sich diese auf das Verstärkungsverhalten auswirken.
 
 \section{Fazit}
 
