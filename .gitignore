@@ -10,7 +10,7 @@ build/
 # Tex Files
 *.aux
 *.log
-*.pdf
+report/*.pdf
 *.synctex.gz
 *.toc
 *.out
