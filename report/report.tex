@@ -118,7 +118,7 @@ Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bit
 \subsection{Photodiode mit Lastwiderstand als Empfänger}
 \label{sec:direct_rx}
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140703/20kHz_10kOhm/scope_2.png}
@@ -142,17 +142,25 @@ Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz
 
 \subsection{Empfänger mit integriertem \textit{AD8015} Transimpedanzverstärker}
 
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.7\textwidth]{img/receiver.pdf}
+  \caption{Beschaltung des \textit{AD8015} Transimpedanzverstärkers}
+  \label{fig:receiver_sch}
+\end{figure}
+
+
 \subsection{Augendiagramme}
 Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
 
-\begin{figure}[h!]
+\begin{figure}[h]
   \centering
     \includegraphics[width=0.7\textwidth]{../photos/IMG_20140710_184030.jpg}
   \caption{Versuchsaufbau zur Bestimmung der Augendiagramme.}
   \label{fig:eye_setup}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/01MHz.png}
