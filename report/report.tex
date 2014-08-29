@@ -10,8 +10,11 @@
 \usepackage{german}
 \pgfplotsset{compat=1.9}
 \normalem
+\parindent 9pt
+
 
 \title{Institutsprojekt: Optischer Link}
+
 \author{R. Brandis \and K. Läufer}
 \date{\today}
 
@@ -41,7 +44,7 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
 
 Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunächst einen sehr einfachen Versuchsaufbau verwendet: Der Modulator wurde direkt an einen Signalgenerator angeschlossen, als Empfänger diente eine kommerziell erhältliche Photodiode mit integrierter Biasspannung. Mit dem Oszilloskop konnten wir nun die Amplitude des empfangenen Signals bei Übertragung von Sinusschwingungen verschiedener Frequenzen messen.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
     \begin{tikzpicture}
       \begin{semilogxaxis}[
@@ -64,32 +67,58 @@ Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunäch
   \label{fig:lcd_transfer_function}
 \end{figure}
 
-In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequenzbereich stark ab. Bei einer von \SI{10}{\hertz} ausgehenden Messreihe war der \SI{-3}{\decibel}-Punkt bereits bei cirka \SI{20}{\hertz} erreicht. Durch Verwendung einer hochfrequenten Trägerwelle, die mit dem niederfrequenten Nutzsignal amplitudenmoduliert wurde, ließ sich das Übertragungsverhalten geringfügig verbessern. Insgesamt mussten wir dennoch feststellen, dass sich der von uns verwendete LCD-Pixel aufgrund seiner geringen Geschwindigkeit vermutlich nur eingeschränkt als Modulator zur Informationsübertragung eignet (siehe Abbildung \ref{fig:lcd_transfer_function}).
+In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequenzbereich stark ab. Bei einer von \SI{10}{\hertz} ausgehenden Messreihe war der \SI{-3}{\decibel}-Punkt bereits bei cirka \SI{20}{\hertz} erreicht. Durch Verwendung einer hochfrequenten Trägerwelle, die mit dem niederfrequenten Nutzsignal amplitudenmoduliert wurde, ließ sich das Übertragungsverhalten geringfügig verbessern (siehe Abbildung \ref{fig:amplitude_modulation}). Insgesamt mussten wir dennoch feststellen, dass sich der von uns verwendete LCD-Pixel aufgrund seiner geringen Geschwindigkeit vermutlich nur eingeschränkt als Modulator zur Informationsübertragung eignet (siehe Abbildung \ref{fig:lcd_transfer_function}).
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.7\textwidth]{../measurements/20140522_sweep/scope_1.png}
+  \caption{Blau: AM-modulierte Trägerwelle, Rosa: Empfangenes Signal}
+  \label{fig:amplitude_modulation}
+\end{figure}
 
 
 \subsection{Übertragung von Audiosignalen}
-\begin{itemize}
-\item Aufbau erklären
-\item Unterpunkt zu Lichtempfaengerschaltungen
-\end{itemize}
 
-Im nächsten Schritt sollten statt einfachen Sinussignalen, die sich direkt im Signalgenerator erzeugen lassen, komplexere Audiosignale mithilfe unseres analogen Links übertragen werden - beispielsweise Musik.
+Im nächsten Schritt sollten statt einfachen Sinussignalen, die sich direkt im Signalgenerator erzeugen lassen, komplexere Audiosignale mithilfe unseres analogen Links übertragen werden --- beispielsweise Musik.
 
 Aufgrund der in Abschnitt \ref{sec:lcd_transfer_characteristics} erläuterten Versuchsergebnisse war es unser Ziel, den Modulator weiterhin mit einer hochfrequenten, amplitudenmodulierten Trägerwelle anzusteuern. Da der Modulationseingang des Signalgenerators nach einem Pegel von $\pm$\SI{5}{\volt} verlangte, haben wir zunächst auf dem Breadboard eine diskrete Kopfhörerverstärkerschaltung aufgebaut, die das aus einem Smartphone oder einem Computer kommende Musiksignal auf den nötigen Pegel verstärkt.
 
+Auf der Empfängerseite kam eine ebenfalls diskret aufgebaute Transimpedanzverstärkerschaltung zum Einsatz, an die zwei aktive Lautsprecher angeschlossen wurden.
+\\\\
+War bei der Übertragung einzelner Sinustöne der Ton noch bis in hohe Frequenzbereiche ($>$\SI{10}{\kilo\hertz}) hörbar, so verschlechterte sich das Übertragungsverhalten für breitbandige Musiksignale sehr stark. Erst durch eine Bandbreitenbegrenzung der Musik auf Frequenzen bis maximal \SI{750}{\hertz} wurden einzelne Basstöne aus dem Ursprungssignal erkennbar, die jedoch weiterhin von starken Störgeräuschen und Verzerrungen begleitet wurden.
 
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=\textwidth]{../audacity_sent.png}
+    \caption{Bandbreitenbegrenztes Ursprungssignal}
+    \label{fig:audacity_sent}
+  \end{subfigure}  
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=\textwidth]{../audacity_received.png}
+    \caption{Mit einem Mikrofon aufgezeichnete Ausgabe der Lautsprecher}
+    \label{fig:audacity_received}
+  \end{subfigure}  
+  \caption{Übertragung eines Musiksignals}
+  \label{fig:audacity}
+\end{figure}
 
+In Abbildung \ref{fig:audacity} ist die geringe Übereinstimmung der Wellenformen des zu übertragenden Musiksignals (\ref{fig:audacity_sent}) und des aus den Lautsprechern zu hörenden Signals (\ref{fig:audacity_received}) zu erkennen.
 
-\subsection{Übertragung digitaler Daten}
+Auch bei reinen Sprachsignalen reichte die Übertragungsqualität bei weitem nicht aus, um Sprachverständlichkeit zu gewährleisten.
 
 \subsubsection{USB zu UART Dongle}
 
+<<<<<<< HEAD
 \begin{figure}[H]
   \centering
     \includegraphics[width=\textwidth]{../measurements/20140610/uart_continous_key/scope_0.png}
   \caption{Hier wird kontinuierlich der gleiche Wert mittels UART gesendet.}
   \label{fig:uart_continous_key}
 \end{figure}
+=======
+\subsection{Übertragung digitaler Daten}
+>>>>>>> Finished section 2.2
 
 \subsubsection{10 Hz Daten}
 
