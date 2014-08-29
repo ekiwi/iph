@@ -73,6 +73,7 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
 
 
 
+
 \section{Direkt modulierter Laser}
 Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
 
@@ -141,6 +142,8 @@ In der Abbildung~\ref{fig:direct_rx} kann man die Abhängigkeit des Ausgangssign
 Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz} Signals weisen darauf hin, dass für schnellere Signale ein besserer Verstärker benötigt wird.
 
 \subsection{Empfänger mit integriertem \textit{AD8015} Transimpedanzverstärker}
+Anstatt selbst eine Empfängerschaltung aufzubauen, bietet es sich an, einen integrierten Transimpedanzverstärker wie den \textit{AD8015} zu benutzen. Dieser ist von Grund auf dazu konzipiert, den Photostrom in eine proportional verstärkte Spannung zu wandeln, welche differentiell mit 50 Ohm Impedanz am Ausgang abgegriffen werden kann. Dieser benötigt nur wenige externe Komponenten was zu einer einfachen Schaltung führt (\ref{fig:receiver_sch})
+
 
 \begin{figure}[h]
   \centering
@@ -148,6 +151,8 @@ Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz
   \caption{Beschaltung des \textit{AD8015} Transimpedanzverstärkers}
   \label{fig:receiver_sch}
 \end{figure}
+
+Mit diesem Aufbau lassen sich auch schnelle Signale verstärken was in der Betrachtung der Augendiagramme zu sehen ist.
 
 
 \subsection{Augendiagramme}
