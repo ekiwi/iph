@@ -34,31 +34,36 @@ Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederu
 \end{itemize}
 Ein einzelner Pixel eines LCD besteht üblicherweise aus einer Flüssigkristallschicht, an die über zwei Elektroden ein elektrisches Feld angelegt werden kann, sowie einem horizontalen und einem vertikalen Polarisationsfilter, je einer vor und einer hinter der Kristallschicht.
 
-Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter zusammen das gesamte einfallende Licht herausfiltern. Die zusätzliche Kristallschicht zwischen beiden Filtern sorgt nun für eine Drehung der Polarisation des durch den ersten Filter polarisierten Lichts. Da sich die Ausrichtung der Kristalle über das angelegte Feld bzw. über die angelegte Spannung steuern lässt, lässt sich somit auch die Menge des insgesamt durchgelassenen Lichts steuern.
+Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter zusammen das gesamte einfallende Licht herausfiltern. Die zusätzliche Kristallschicht zwischen beiden Filtern sorgt jedoch für eine Drehung der Polarisation des durch den ersten Filter polarisierten Lichts. Da sich die Ausrichtung der Kristalle über das angelegte Feld beziehungsweise über die angelegte Spannung steuern lässt, lässt sich somit auch die Menge des insgesamt durchgelassenen Lichts steuern.
 
 Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das in den Modulator einfallende Licht bereits polarisiert. Der von uns verwendete LCD-Pixel musste daher nur über einen Polarisationsfilter hinter der Kristallschicht verfügen.
 
 \subsubsection{Übertragungscharakteristik}
 
+\begin{figure}[h]
+  \centering
+    \begin{tikzpicture}
+      \begin{semilogxaxis}[
+        log ticks with fixed point,
+        xlabel={Frequenz [Hz]},
+        ylabel={Spannung [dB]},
+        xmin=9.1,
+        xmax=1200,
+        ymin=0,
+        ymax=65,
+        width=0.94\textwidth,
+        height=0.57\textwidth,
+        axis x line=bottom,
+        axis y line=left
+      ]
+      \addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
+      \end{semilogxaxis}
+    \end{tikzpicture}
+  \caption{Übertragungscharakteristik des LCD-Modulators}
+  \label{fig:lcd_transfer_function}
+\end{figure}
 
 
-\begin{tikzpicture}
-  \begin{semilogxaxis}[
-    log ticks with fixed point,
-    xlabel={Frequenz [Hz]},
-    ylabel={Spannung [dB]},
-    xmin=9.1,
-    xmax=1200,
-    ymin=0,
-    ymax=65,
-    width=0.94\textwidth,
-    height=0.57\textwidth,
-    axis x line=bottom,
-    axis y line=left
-  ]
-  \addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
-  \end{semilogxaxis}
-\end{tikzpicture}
 
 
 \subsection{Übertragung von Audiosignalen}
