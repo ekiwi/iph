@@ -40,6 +40,8 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
 
 \subsubsection{Übertragungscharakteristik}
 
+Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunächst einen sehr einfachen Versuchsaufbau verwendet: Der Modulator wurde direkt an einen Signalgenerator angeschlossen, als Empfänger diente eine kommerziell erhältliche Photodiode mit integrierter Biasspannung. Mit dem Oszilloskop konnten wir nun die Amplitude des empfangenen Signals bei Übertragung von Sinusschwingungen verschiedener Frequenzen messen.
+
 \begin{figure}[h]
   \centering
     \begin{tikzpicture}
@@ -50,7 +52,7 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
         xmin=9.1,
         xmax=1200,
         ymin=0,
-        ymax=65,
+        ymax=66,
         width=0.94\textwidth,
         height=0.57\textwidth,
         axis x line=bottom,
@@ -59,11 +61,11 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
       \addplot+[smooth] table [x=f, y=u_db, col sep=comma] {2.1_lcd_sweep_data.csv};
       \end{semilogxaxis}
     \end{tikzpicture}
-  \caption{Übertragungscharakteristik des LCD-Modulators}
+  \caption{Übertragungscharakteristik des LCD-Modulators (Trägerfrequenz: \SI{100}{\kilo\hertz}, Amplitude: $\pm$\SI{6}{\volt})}
   \label{fig:lcd_transfer_function}
 \end{figure}
 
-
+In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequenzbereich stark ab. Bei einer von \SI{10}{\hertz} ausgehenden Messreihe war der \SI{-3}{\decibel}-Punkt bereits bei cirka \SI{20}{\hertz} erreicht. Durch Verwendung einer hochfrequenten Trägerwelle, die mit dem niederfrequenten Nutzsignal amplitudenmoduliert wurde, ließ sich das Übertragungsverhalten geringfügig verbessern. Insgesamt mussten wir dennoch feststellen, dass sich der von uns verwendete LCD-Pixel aufgrund seiner geringen Geschwindigkeit vermutlich nur eingeschränkt als Modulator zur Informationsübertragung eignet (siehe Abbildung \ref{fig:lcd_transfer_function}).
 
 
 \subsection{Übertragung von Audiosignalen}
