@@ -1,11 +1,13 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[german]{babel}
-\usepackage{german}
 \usepackage{siunitx}
 \usepackage{hyperref,ulem,setspace}
 \usepackage{caption,subcaption}
 \usepackage{graphicx,pgfplots}
+\usepackage{multicol}
+\usepackage{minted}
+\usepackage[german]{babel}
+\usepackage{german}
 \pgfplotsset{compat=1.9}
 \normalem
 
@@ -14,6 +16,7 @@
 \date{\today}
 
 \begin{document}
+
 \maketitle
 \newpage
 \tableofcontents
@@ -214,5 +217,21 @@ Bezüglich der Sendeschaltung sollte man als nächstes versuchen, diese, wie obe
 Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal nicht verändert werden. Es wäre aber interessant diesen noch besser zu vermessen. Unter anderem sollte mit einer professionellen Lichtquelle untersucht werden, bis zu welchen Frequenzen verstärkt werden kann. Bisher wurde hier nur das Gesamtsystem aus Empfänger und Sender untersucht, was es erschwert, eindeutige Aussagen über die Einzelkomponente zu machen. Interessant könnte es auch sein, die \textit{AD8015} Schaltung mit verschiedenen Photodioden aufzubauen und zu untersuchen, wie sich diese auf das Verstärkungsverhalten auswirken.
 
 \section{Fazit}
+
+
+\appendix
+\section{C++ Quellcode Ausschnitte}
+
+\subsection{Hamming Code}
+\inputminted[label=hamming.hpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/hamming.hpp}
+\url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/hamming.hpp}
+
+\subsection{Software UART: Quelle}
+\inputminted[label=transmitter.cpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/source/transmitter.cpp}
+\url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/source/transmitter.cpp}
+
+\subsection{Software UART: Empfänger}
+\inputminted[label=receiver.cpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/sink/receiver.cpp}
+\url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/sink/receiver.cpp}
 
 \end{document}

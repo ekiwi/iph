@@ -57,8 +57,8 @@ decode(uint8_t data) {
 			index = ii;
 		}
 	}
-	XPCC_LOG_INFO << min_distance << ",";
-	XPCC_LOG_DEBUG << xpcc::endl << "Minimum Hamming distance: " << min_distance
+	XPCC_LOG_INFO << min_distance << "," << xpcc::endl;
+	XPCC_LOG_DEBUG << "Minimum Hamming distance: " << min_distance
 		<< xpcc::endl;
 	return index;
 }

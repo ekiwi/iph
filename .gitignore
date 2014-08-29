@@ -15,6 +15,7 @@ report/*.pdf
 *.toc
 *.out
 *.dvi
+*.pyg
 
 # Latex MK
 *.fdb_latexmk
