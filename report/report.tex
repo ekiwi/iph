@@ -30,11 +30,6 @@ Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu über
 Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederum verschiedene Aufbauten als Modulator denkbar. Ein Lautsprecher mit einem in der Mitte der Membran angebrachten kleinen Spiegel kann je nach Auslenkung der Membran die Intensität des auf der Photodiode des Empfängers auftreffenden Lichts verändern; mit dieser Technik hat sich eine zweite Projektgruppe genauer beschäftigt. Wir haben uns stattdessen für die Variante entschieden, bei der ein einzelner LCD-Pixel (engl. \textit{liquid crystal display}) zum Einsatz kommt.
 
 \subsection{LCD-Modul als Modulator}
-\begin{itemize}
-\item Allgemeines Funktionsprinzip eines LCDs
-\item Versuchsaufbau beschreiben
-\item Resultate Übertragungsfunktion
-\end{itemize}
 Ein einzelner Pixel eines LCD besteht üblicherweise aus einer Flüssigkristallschicht, an die über zwei Elektroden ein elektrisches Feld angelegt werden kann, sowie einem horizontalen und einem vertikalen Polarisationsfilter, je einer vor und einer hinter der Kristallschicht.
 
 Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter zusammen das gesamte einfallende Licht herausfiltern. Die zusätzliche Kristallschicht zwischen beiden Filtern sorgt jedoch für eine Drehung der Polarisation des durch den ersten Filter polarisierten Lichts. Da sich die Ausrichtung der Kristalle über das angelegte Feld beziehungsweise über die angelegte Spannung steuern lässt, lässt sich somit auch die Menge des insgesamt durchgelassenen Lichts steuern.
@@ -42,6 +37,7 @@ Wären die Flüssigkristalle nicht vorhanden, würden beide Polarisationsfilter 
 Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das in den Modulator einfallende Licht bereits polarisiert. Der von uns verwendete LCD-Pixel musste daher nur über einen Polarisationsfilter hinter der Kristallschicht verfügen.
 
 \subsubsection{Übertragungscharakteristik}
+\label{sec:lcd_transfer_characteristics}
 
 Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunächst einen sehr einfachen Versuchsaufbau verwendet: Der Modulator wurde direkt an einen Signalgenerator angeschlossen, als Empfänger diente eine kommerziell erhältliche Photodiode mit integrierter Biasspannung. Mit dem Oszilloskop konnten wir nun die Amplitude des empfangenen Signals bei Übertragung von Sinusschwingungen verschiedener Frequenzen messen.
 
@@ -77,6 +73,13 @@ In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequen
 \item Unterpunkt zu Lichtempfaengerschaltungen
 \end{itemize}
 
+Im nächsten Schritt sollten statt einfachen Sinussignalen, die sich direkt im Signalgenerator erzeugen lassen, komplexere Audiosignale mithilfe unseres analogen Links übertragen werden - beispielsweise Musik.
+
+Aufgrund der in Abschnitt \ref{sec:lcd_transfer_characteristics} erläuterten Versuchsergebnisse war es unser Ziel, den Modulator weiterhin mit einer hochfrequenten, amplitudenmodulierten Trägerwelle anzusteuern. Da der Modulationseingang des Signalgenerators nach einem Pegel von $\pm$\SI{5}{\volt} verlangte, haben wir zunächst auf dem Breadboard eine diskrete Kopfhörerverstärkerschaltung aufgebaut, die das aus einem Smartphone oder einem Computer kommende Musiksignal auf den nötigen Pegel verstärkt.
+
+
+
+
 \subsection{Übertragung digitaler Daten}
 
 
@@ -85,9 +88,9 @@ In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequen
 
 
 \section{Direkt modulierter Laser}
-Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
+Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden, um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
 
-Unser Ziel war es eine Stromquelle direkt mit einem Datensignal zu modulieren und danach Empfängerdesigns zu evaluieren.
+Unser Ziel war es, eine Stromquelle direkt mit einem Datensignal zu modulieren und danach Empfängerdesigns zu evaluieren.
 
 
 \subsection{Sender: modulierte Konstantstromquelle}
@@ -145,7 +148,7 @@ Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bit
   \label{fig:direct_rx}
 \end{figure}
 
-Als Empfänger nutzten wir zunächst, zum Testen der Sendeschaltung, eine Photodiode mit Biasspannung und umschaltbaren Lastwiderstand von ThorLabs (\textbf{??Typenbezeichnung??}).
+Als Empfänger nutzten wir zunächst, zum Testen der Sendeschaltung, eine Photodiode mit Biasspannung und umschaltbarem Lastwiderstand (NewFocus 1623).
 
 In der Abbildung~\ref{fig:direct_rx} kann man die Abhängigkeit des Ausgangssignals vom Lastwiderstand sehen. Dazu wurde der Ausgang der Photodiode mit einem hochohmig terminierten Eingang eines Oszilloskops verbunden und auf den Eingang unserer Sendeschaltung~\ref{sec:direct_tx} ein \SI{20}{\kilo\hertz} Rechtecksignal gegeben. Bei einem hohen Lastwiderstand (\ref{fig:direct_rx_10k_R}) erhöht sich die Verstärkung: die Amplitude ist hier in etwa \SI{10}{\milli\volt}. Jedoch sinkt die Bandbreite, was sich an sehr langen Anstiegs- und Abfallzeiten und der daraus resultierenden Dreiecksform des Ausgangssignals bemerkbar macht. Mit einem kleineren Lastwiderstand (\ref{fig:direct_rx_50_R}) ergibt sich ein weniger verzerrtes Signal, die Amplitude beträgt jedoch nur noch in etwa \SI{1}{\milli\volt}.
 
