@@ -27,6 +27,8 @@
 
 \section{Aufgabenstellung}
 
+
+
 \section{Extern modulierter Laser}
 Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu übertragen, muss mindestens ein Parameter des Laserstrahls extern moduliert werden. Mögliche Modulationsparameter sind beispielsweise die Amplitude oder die Phase des Strahls. In unseren Versuchen kam ausschließlich Amplitudenmodulation zum Einsatz.
 
@@ -67,7 +69,7 @@ Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunäch
   \label{fig:lcd_transfer_function}
 \end{figure}
 
-In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequenzbereich stark ab. Bei einer von \SI{10}{\hertz} ausgehenden Messreihe war der \SI{-3}{\decibel}-Punkt bereits bei cirka \SI{20}{\hertz} erreicht. Durch Verwendung einer hochfrequenten Trägerwelle, die mit dem niederfrequenten Nutzsignal amplitudenmoduliert wurde, ließ sich das Übertragungsverhalten geringfügig verbessern (siehe Abbildung \ref{fig:amplitude_modulation}). Insgesamt mussten wir dennoch feststellen, dass sich der von uns verwendete LCD-Pixel aufgrund seiner geringen Geschwindigkeit vermutlich nur eingeschränkt als Modulator zur Informationsübertragung eignet (siehe Abbildung \ref{fig:lcd_transfer_function}).
+In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequenzbereich stark ab. Bei einer von \SI{10}{\hertz} ausgehenden Messreihe war der \SI{-3}{\decibel}-Punkt bereits bei cirka \SI{20}{\hertz} erreicht. Durch Verwendung einer hochfrequenten Trägerwelle, die mit dem niederfrequenten Nutzsignal amplitudenmoduliert wurde\footnote{Diese Funktion stellte der verwendete Signalgenerator von Haus aus bereit.}, ließ sich das Übertragungsverhalten geringfügig verbessern (siehe Abbildung \ref{fig:amplitude_modulation}). Insgesamt mussten wir dennoch feststellen, dass sich der von uns verwendete LCD-Pixel aufgrund seiner geringen Geschwindigkeit nur eingeschränkt als Modulator zur Informationsübertragung eignet (siehe Frequenzgang in Abbildung \ref{fig:lcd_transfer_function}).
 
 \begin{figure}[H]
   \centering
