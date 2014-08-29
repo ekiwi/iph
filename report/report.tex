@@ -110,8 +110,15 @@ In Abbildung \ref{fig:audacity} ist die geringe Übereinstimmung der Wellenforme
 Auch bei reinen Sprachsignalen reichte die Übertragungsqualität bei weitem nicht aus, um Sprachverständlichkeit zu gewährleisten.
 
 \subsection{Übertragung digitaler Daten}
+Nach den Experimenten mit der analogen Signalübertragung, war es von Interesse auch einmal digitale Daten zu übertragen.
 
 \subsubsection{USB zu UART Dongle}
+Als erster Ansatz wurden günstige UART \footnote{Universal Asynchronous Transmitter/Receiver} zu USB Adapter benutzt. Diese benutzen \SI{3.3}{\volt}  CMOS Signale, welche mittels eines Komparators auf $\pm$\SI{5}{\volt} Pegel gebracht werden. Mit diesem Pegel kann man direkt auf den Eingang des \textit{DG1022} Signalgenerators von Rigol geben. Bei Amplitudenmodulation führen dann +\SI{5}{\volt} zur maximalen Amplitude und -\SI{5}{\volt}  zu einer Amplitude von fast Null. So ließ sich ein einfaches On-Off Keying umsetzen. Leider war es nicht möglich bei dem UART Adapter Baudraten unter \SI{1}{\kilo\hertz} einzustellen.
+
+Dies war aber deutlich zu schnell, für das LCD, wie man in der Abbildung~\ref{fig:uart_continous_key} sehen kann. Hier wurde eine Taste im Terminal gedrückt gehalten um immer den gleichen Wert zu senden. Man beachte, dass bei dieser und allen folgenden Messungen der grüne Kanal, also die Messung am Ausgang des Transimpedanzverstärkers, auf AC Coupling eingestellt war. Somit sind die Messergebnisse nicht wirklich verlässlich und es lassen sich höchstens Tendenzen feststellen. Hier wäre es interessant diese Messungen noch einmal mit richtigen Einstellungen zu wiederholen.
+
+Man sieht aber, dass ein kurzes \textit{High} am Ausgang des UART Adapters (blauer Kanal) zu wenig Änderung am Ausgang des Transimpedanzverstärkers führt. Das LCD kann wohl dem Signal nicht folgen.
+
 
 \begin{figure}[H]
   \centering
@@ -121,7 +128,7 @@ Auch bei reinen Sprachsignalen reichte die Übertragungsqualität bei weitem nic
 \end{figure}
 
 \subsubsection{10 Hz Daten}
-
+Nachdem die UART Daten viel zu schnell waren, wurde als nächstes ein Signalgenerator benutzt um Bitsequenzen mit \SI{10}{\hertz} zu erzeugen. Diese wurden ebenfalls mittels On-Off Keying an das LCD gebracht. Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus sich abwechselnden Nullen und Einsen und einem Zufallsmuster. Wie in Abbildung~\ref{fig:uart_10hz} gut zu sehen ist, kann sich das LCD auf eine konstante Frequenz einschwingen. Bei einem Zufallssignal dagegen hängt das Signal von der Vorgeschichte ab. Hier ist gut zu sehen, warum man bei einer Messung, wie z.B. der Erstellung von Augendiagrammen (siehe \ref{sec:eye_diag}) ein Zufallssignal verwendet werden sollte und ein deterministisches Signal nicht ausreicht.
 
 \begin{figure}[H]
   \centering
@@ -136,10 +143,11 @@ Auch bei reinen Sprachsignalen reichte die Übertragungsqualität bei weitem nic
     \label{fig:uart_10hz_random}
   \end{subfigure}
   \caption{\SI{10}{\hertz} Signal}
+  \label{fig:uart_10hz}
 \end{figure}
 
 \subsubsection{Software UART mit Mikrocontroller}
-
+Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UART mittels Software implementiert, wodurch sich dessen Baudrate beliebig langsam machen lässt. Hierzu wurde ein STM32F4 und ein STM32F3 Discovery Board verwendet. Der Quellcode benutzt die XPCC Bibliothek.
 
 \begin{figure}[H]
   \centering
@@ -255,6 +263,7 @@ Mit diesem Aufbau lassen sich auch schnelle Signale verstärken was in der Betra
 
 
 \subsection{Augendiagramme}
+\label{sec:eye_diag}
 Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
 
 \begin{figure}[H]
