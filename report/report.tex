@@ -1,8 +1,9 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{siunitx}
+\sisetup{binary-units=true,per-mode=symbol}
 \usepackage{hyperref,ulem,setspace}
-\usepackage{caption,subcaption}
+\usepackage[labelfont=bf]{caption,subcaption}
 \usepackage{graphicx,pgfplots,pgf-pie}
 \usepackage{multicol}
 \usepackage{minted}
@@ -143,7 +144,7 @@ Man sieht aber, dass ein kurzes \textit{High} am Ausgang des UART Adapters (blau
 \end{figure}
 
 \subsubsection{10 Hz Daten}
-Nachdem die UART Daten viel zu schnell waren, wurde als nächstes ein Signalgenerator benutzt um Bitsequenzen mit \SI{10}{\hertz} zu erzeugen. Diese wurden ebenfalls mittels On-Off Keying an das LCD gebracht. Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus sich abwechselnden Nullen und Einsen und einem Zufallsmuster. Wie in Abbildung~\ref{fig:uart_10hz} gut zu sehen ist, kann sich das LCD auf eine konstante Frequenz einschwingen. Bei einem Zufallssignal dagegen hängt das Signal von der Vorgeschichte ab. Hier ist gut zu sehen, warum man bei einer Messung, wie z.B. der Erstellung von Augendiagrammen (siehe \ref{sec:eye_diag}) ein Zufallssignal verwendet werden sollte und ein deterministisches Signal nicht ausreicht.
+Nachdem die UART Daten viel zu schnell waren, wurde als nächstes der Signalgenerator benutzt um Bitsequenzen mit \SI{10}{\hertz} zu erzeugen. Diese wurden ebenfalls mittels On-Off Keying an das LCD gebracht. Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus sich abwechselnden Nullen und Einsen und einem Zufallsmuster. Wie in Abbildung~\ref{fig:uart_10hz} gut zu sehen ist, kann sich das LCD auf eine konstante Frequenz einschwingen. Bei einem Zufallssignal dagegen hängt das Signal von der Vorgeschichte ab. Hier ist gut zu sehen, warum man bei einer Messung, wie z.B. der Erstellung von Augendiagrammen (siehe \ref{sec:eye_diag}) ein Zufallssignal verwendet werden sollte und ein deterministisches Signal nicht ausreicht.
 
 \begin{figure}[H]
   \centering
@@ -162,7 +163,9 @@ Nachdem die UART Daten viel zu schnell waren, wurde als nächstes ein Signalgene
 \end{figure}
 
 \subsubsection{Software UART mit Mikrocontroller}
-Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UART mittels Software implementiert, wodurch sich dessen Baudrate beliebig langsam machen lässt. Hierzu wurde ein STM32F4 und ein STM32F3 Discovery Board verwendet. Der Quellcode benutzt die XPCC Bibliothek.
+Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UART mittels Software implementiert, wodurch sich dessen Baudrate beliebig langsam machen lässt. Hierzu wurde ein STM32F4 und ein STM32F3 Discovery Board verwendet. Der Quellcode benutzt die XPCC Bibliothek und auf \url{http://github.com/ekiwi/iph} zu finden. Die wichtigsten funktionalen Bestandteile sind aber auch im Anhang~\ref{app:code} zu finden.
+
+Der Versuchsaufbau ist in Abbildung~\ref{fig:sotware_uart_signal_chain} zu sehen. Die Signalkette entspricht der, die beim ersten Versuch mit den UART Adaptern benutzt wurde.
 
 \begin{figure}[H]
   \centering
@@ -170,6 +173,44 @@ Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UA
   \caption{Software UART Signalkette}
   \label{fig:sotware_uart_signal_chain}
 \end{figure}
+
+Zur Verbesserung der Robustheit der Übertragung kam ein Hamming (7,4) Code zum Einsatz, bei dem alle Codewörter einen Hammingabstand von mindestens drei haben. Damit kommen auf vier Datenbits drei Paritätsbits. Dies erlaubt die Korrektur von einfachen Bitfehlern. Ein einfacher Algorithmus hierfür sieht wie folgt aus (siehe auch Quellcode in Anhang~\ref{app:code_hamming}):
+
+Für ein Empfangenes Wort, wird der Hammingabstand zu jedem möglichen Codewort errechnet. Ist dieser eins oder null, wird davon ausgegangen, das das empfangene Wort dem Codewort entspricht. Dies Erlaubt somit die Korrektur einfacher Bitfehler, führt bei zweifachen Bitfehlern jedoch zu einer falschen Zuordnung. Da nämlich der minimale Hammingabstand zwischen gültigen Codeworten drei ist und bei zwei Bitfehler, der Hammingabstand zum ursprünglichen Codewort zwei ist, gibt es ein anderes Codewort, zu dem die Empfangene Sequenz nur einen Hammingabstand von eins hat. Diesem wird dann das empfangene Codewort, fälschlicher Weise, zugeordnet.
+
+Zum Test der Übertragung wurden 294 Datenwörter in Hamming (7,4) Codierung übertragen. Die Signalkette entsprach hierbei der in Abbildung~\ref{fig:sotware_uart_signal_chain} gezeigten. Die Positionierung des Lasers und der Empfängerdiode der in Abbildung~\ref{fig:photo_lcd_experiment} gezeigten. Der Inhalt der Datenpakete waren die Zahlen von 0 bis 15. Dies reduziert die Aussagekraft des Experiments etwas im Vergleich zu randomisierten Daten, machte aber die Auswertung um einiges leichter. Denn um zwei Bitfehler oder mehr zu erkennen, bei denen ja, wie oben beschrieben, der falsche Wert empfangen wird, müssen die gesendeten Daten am Empfänger bekannt sein. Somit gelangten wir zu der in Abbildung~\ref{fig:sotware_uart_errors} dargestellten Fehlerverteilung.
+
+\begin{figure}[H]
+  \centering
+    \begin{tikzpicture}
+    \pie[explode=0.1,color={green,yellow,orange}]{26/0 Fehler, 62/1 Fehler, 12/2+ Fehler}
+    \end{tikzpicture}
+  \caption{Fehler bei der Übertragung von 294 Hamming (7,4) codierten, deterministischen Datenworten mit einem \SI{4}{\hertz} UART Signal}
+  \label{fig:sotware_uart_errors}
+\end{figure}
+
+Somit sind, nach Fehlerkorrektur durch den Hammingcode, immer noch zwölf Prozent der empfangenen Daten falsch und müssten in einem echten Übertragungssystem durch höhere Layer abgefangen werden. Die Rate der Datenbits berechnet sich wie folgt:
+
+\begin{equation}
+ \SI{4}{\bit\per\second} * \frac{\SI{4}{\bit}}{\SI{7}{\bit}} \approx \SI{2.3}{\bit\per\second}
+\end{equation}
+
+Somit wurden über etwa \SI{30}{\centi\meter} mit \SI{2.3}{\bit\per\second} und einer recht hohen Fehlerrate von \SI{12}{\percent} Daten übertragen. Kein wirklich gutes Ergebnis.
+
+Aber warum ist das so? Für eine Erklärungsversuch lohnt es sich die Beobachtungen in Abbildung~\ref{fig:uart_4hz_edge} zu betrachten. Hier sieht man, dass eine zufällig ausgewählte steigende Flanke (\ref{fig:uart_4hz_rising_edge})  \SI{162}{\milli\second} benötigte um durch das System zu propagieren. Eine fallende Flanke (\ref{fig:uart_4hz_falling_edge}) hatte mit \SI{20}{\milli\second} eine deutlich kleinere Verzögerung. Weitere beobachtete Flanken wiesen Verzögerungen in der gleichen Größenordnung, wie die hier dokumentierten, auf
+
+Da, bei einem zufälligen Bit, eine steigende Flanke sowohl an dessen Anfang als auch an dessen Ende auftreten kann, müsste man, um sicher zu gehen mindestens wta \SI{162}{\milli\second} nach Anfang und etwa \SI{162}{\milli\second} vor Ende eines Bits sampeln um Fehler zu vermeiden. Dies führt zu Folgender maximaler Datenrate:
+
+\begin{equation}
+	T_{min} = \SI{162}{\milli\second} * 2 = \SI{324}{\milli\second}
+\end{equation}
+\begin{equation}
+	f_{max} = \frac{1}{T_{min}} = \frac{1}{\SI{324}{\milli\second}} \approx \SI{3}{\bit\per\second}
+\end{equation}
+
+Somit könnte ein Absenken der Bitrate auf \SI{3}{\bit\per\second} in Kombination mit einer intelligenten Wahl des Samplingzeitpunktes eine Hammingcodierung überflüssig machen und somit zu einer höheren Datenrate führen. Hierfür müssen aber die Latenzen bekannt sein und bei der Synchronisation durch die erste fallende Flanke (siehe Anhang~\ref{app:uart_receiver} Zeile 39) miteinbezogen werden.
+
+Bei einem Test wurde, ohne Kenntnis der Latenz, mit einer Datenrate von \SI{2}{\bit\per\second} übertragen. Hierbei traten fast keine Bitfehler auf.
 
 \begin{figure}[H]
   \centering
@@ -183,18 +224,11 @@ Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UA
     \caption{fallende Flanke: \SI{20}{\milli\second}}
     \label{fig:uart_4hz_falling_edge}
   \end{subfigure}
-  \caption{Verzögerung bei einem \SI{4}{\hertz} UART Signal}
+  \caption{Verzögerung bei einem \SI{4}{\hertz} UART Signal; Quellensignal in gelb und invertiertes Ausgangssignal in grün}
+  \label{fig:uart_4hz_edge}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-    \begin{tikzpicture}
-    \pie[explode=0.1,color={green,yellow,orange}]{26/0 Fehler, 62/1 Fehler, 12/2+ Fehler}
-    \end{tikzpicture}
-  \caption{Übertragungsfehler bei einem \SI{4}{\hertz} UART Signal mit Hamming (7,4) Code}
-  \label{fig:sotware_uart_errors}
-\end{figure}
-
+Mit oben genannten Berechnungen ist aber nur eine maximale theoretische Datenrate von etwa \SI{3}{\bit\per\second} möglich. Interessant wäre es daher die Ursache der Latenz zu untersuchen. Hierbei sollte bei verschiedenen Ansteuerungsarten des LCD die erzielte Latenz gemessen werden. Mit den oben genannten Berechnungen lässt sich daraus die mögliche Datenrate berechnen.
 
 \section{Direkt modulierter Laser}
 Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden, um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
@@ -334,8 +368,10 @@ Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal n
 
 \appendix
 \section{C++ Quellcode Ausschnitte}
+\label{app:code}
 
 \subsection{Hamming Code}
+\label{app:code_hamming}
 \inputminted[label=hamming.hpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/hamming.hpp}
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/hamming.hpp}
 
@@ -344,6 +380,7 @@ Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal n
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/source/transmitter.cpp}
 
 \subsection{Software UART: Empfänger}
+\label{app:uart_receiver}
 \inputminted[label=receiver.cpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/sink/receiver.cpp}
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/sink/receiver.cpp}
 
