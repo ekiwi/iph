@@ -18,16 +18,55 @@
 \date{\today}
 
 \begin{document}
+\begin{titlepage}
+\begin{center}
 
-\maketitle
+% Upper part of the page. The '~' is needed because \\
+% only works if a paragraph has started.
+\includegraphics[width=0.7\textwidth]{../iph_logo.png}~\\[1cm]
+
+\textsc{\LARGE Institut für integrierte Photonik}\\[0.5cm]
+
+\textsc{\Large der}\\[0.5cm]
+
+\textsc{\LARGE RWTH Aachen University}\\[1.5cm]
+
+
+\textsc{\Large Institutsprojekt}\\[0.5cm]
+
+% Title
+\rule{\linewidth}{0.5mm} \\[0.4cm]
+{ \huge \bfseries Optischer Link \\[0.4cm] }
+
+\rule{\linewidth}{0.5mm} \\[1.5cm]
+
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Teilnehmer:}\\
+Raphael \textsc{Brandis}\\
+Kevin \textsc{Läufer}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Betreuer:} \\
+Johannes \textsc{Hauck}
+\end{flushright}
+\end{minipage}
+
 \vfill
 
-\begin{figure}[h]
-  \centering
-    \includegraphics{../iph_logo.png}
-\end{figure}
+% Bottom of the page
+{\large \today}
 
-\newpage
+\end{center}
+\end{titlepage}
+
+
+%\maketitle
+%\vfill
+
 \tableofcontents
 \newpage
 
