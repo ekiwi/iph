@@ -93,8 +93,15 @@ Im nächsten Schritt sollten statt einfachen Sinussignalen, die sich direkt im S
 
 Aufgrund der in Abschnitt \ref{sec:lcd_transfer_characteristics} erläuterten Versuchsergebnisse war es unser Ziel, den Modulator weiterhin mit einer hochfrequenten, amplitudenmodulierten Trägerwelle anzusteuern. Da der Modulationseingang des Signalgenerators nach einem Pegel von $\pm$\SI{5}{\volt} verlangte, haben wir zunächst auf dem Breadboard eine diskrete Kopfhörerverstärkerschaltung aufgebaut, die das aus einem Smartphone oder einem Computer kommende Musiksignal auf den nötigen Pegel verstärkt.
 
-Auf der Empfängerseite kam eine ebenfalls diskret aufgebaute Transimpedanzverstärkerschaltung zum Einsatz, an die zwei aktive Lautsprecher angeschlossen wurden.
-\\\\
+Auf der Empfängerseite kam eine ebenfalls diskret aufgebaute Transimpedanzverstärkerschaltung zum Einsatz, an die zwei aktive Lautsprecher angeschlossen wurden. Der Aufbau aus Laserdiode, LCD-Modulator und Photodiode mit Transimpedanzverstärker ist in Abbildung \ref{fig:photo_lcd_experiment} zu sehen.
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=\textwidth]{img/photo_lcd_experiment.jpg}
+  \caption{Versuchsaufbau zur Übertragung von Audiosignalen}
+  \label{fig:photo_lcd_experiment}
+\end{figure}
+
 War bei der Übertragung einzelner Sinustöne der Ton noch bis in hohe Frequenzbereiche ($>$\SI{10}{\kilo\hertz}) hörbar, so verschlechterte sich das Übertragungsverhalten für breitbandige Musiksignale sehr stark. Erst durch eine Bandbreitenbegrenzung der Musik auf Frequenzen bis maximal \SI{750}{\hertz} wurden einzelne Basstöne aus dem Ursprungssignal erkennbar, die jedoch weiterhin von starken Störgeräuschen und Verzerrungen begleitet wurden.
 
 \begin{figure}[H]
