@@ -2,7 +2,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage{siunitx}
 \sisetup{binary-units=true,per-mode=symbol}
-\usepackage{hyperref,ulem,setspace}
+\usepackage[hang, flushmargin]{footmisc}
+\usepackage[hyperfootnotes=false]{hyperref}
+\usepackage{footnotebackref}
+\usepackage{ulem,setspace}
 \usepackage[labelfont=bf]{caption,subcaption}
 \usepackage{graphicx,pgfplots,pgf-pie}
 \usepackage{multicol}
@@ -41,14 +44,17 @@
 \rule{\linewidth}{0.5mm} \\[1.5cm]
 
 % Author and supervisor
-\begin{minipage}{0.4\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
+\vspace{0pt}
 \begin{flushleft} \large
 \emph{Teilnehmer:}\\
 Raphael \textsc{Brandis}\\
 Kevin \textsc{Läufer}
 \end{flushleft}
 \end{minipage}
-\begin{minipage}{0.4\textwidth}
+\hfill
+\begin{minipage}[t]{0.4\textwidth}
+\vspace{0pt}
 \begin{flushright} \large
 \emph{Betreuer:} \\
 Johannes \textsc{Hauck}
