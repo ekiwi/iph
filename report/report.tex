@@ -211,54 +211,40 @@ Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus
 \end{figure}
 
 \subsubsection{Software-UART mit Mikrocontrollern}
-Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UART mittels Software implementiert, wodurch sich dessen Baudrate beliebig langsam machen lässt. Hierzu wurde ein STM32F4 und ein STM32F3 Discovery Board verwendet. Der Quellcode benutzt die XPCC Bibliothek und auf \url{http://github.com/ekiwi/iph} zu finden. Die wichtigsten funktionalen Bestandteile sind aber auch im Anhang~\ref{app:code} zu finden.
+Um nun endlich digitale Nutzdaten zu übertragen, haben wir auf einem Mikrocontroller UART in Software implementiert, um die verwendete Baudrate beliebig niedrig wählen zu können. Hierzu wurden zwei \textit{STMicroelectronics Discovery Boards} verwendet, eines mit \textit{STM32F4}- und eines mit \textit{STM32F3}-Mikrocontroller. Der Quellcode nutzt die \textit{XPCC}-Bibliothek und ist auf \url{http://github.com/ekiwi/iph} abrufbar. Die wichtigsten funktionalen Bestandteile sind aber auch im Anhang~\ref{app:code} zu finden.
 
-Der Versuchsaufbau ist in Abbildung~\ref{fig:sotware_uart_signal_chain} zu sehen. Die Signalkette entspricht der, die beim ersten Versuch mit den UART Adaptern benutzt wurde.
+Zur Verbesserung der Robustheit der Übertragung kam ein (7,4)-Hamming-Code zum Einsatz, bei dem alle gültigen Codewörter untereinander einen Hammingabstand von mindestens drei besitzen. Somit kommen auf vier Datenbits drei Paritätsbits, was die Korrektur einfacher Bitfehler erlaubt. Ein möglicher Algorithmus hierfür sieht wie folgt aus (siehe auch Quellcode in Anhang~\ref{app:code_hamming}):
+
+Für ein empfangenes Wort wird der Hammingabstand zu jedem gültigen Codewort errechnet. Beträgt der Abstand eins oder null, wird davon ausgegangen, dass das empfangene Wort dem Codewort entspricht. Bei zweifachen Bitfehlern führt dies zu einer falschen Zuordnung: Da der Hammingabstand zwischen zwei gültigen Codeworten drei beträgt und bei zwei Bitfehlern der Abstand zum ursprünglichen Codewort zwei ist, gibt es ein anderes Codewort, zu dem die empfangene Sequenz nur einen Hammingabstand von eins hat. Diesem Codewort wird das empfangene Wort fälschlicherweise zugeordnet.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{img/software_uart.pdf}
-  \caption{Software UART Signalkette}
+  \caption{Software-UART-Signalkette}
   \label{fig:sotware_uart_signal_chain}
 \end{figure}
 
-Zur Verbesserung der Robustheit der Übertragung kam ein Hamming (7,4) Code zum Einsatz, bei dem alle Codewörter einen Hammingabstand von mindestens drei haben. Damit kommen auf vier Datenbits drei Paritätsbits. Dies erlaubt die Korrektur von einfachen Bitfehlern. Ein einfacher Algorithmus hierfür sieht wie folgt aus (siehe auch Quellcode in Anhang~\ref{app:code_hamming}):
 
-Für ein Empfangenes Wort, wird der Hammingabstand zu jedem möglichen Codewort errechnet. Ist dieser eins oder null, wird davon ausgegangen, das das empfangene Wort dem Codewort entspricht. Dies Erlaubt somit die Korrektur einfacher Bitfehler, führt bei zweifachen Bitfehlern jedoch zu einer falschen Zuordnung. Da nämlich der minimale Hammingabstand zwischen gültigen Codeworten drei ist und bei zwei Bitfehler, der Hammingabstand zum ursprünglichen Codewort zwei ist, gibt es ein anderes Codewort, zu dem die Empfangene Sequenz nur einen Hammingabstand von eins hat. Diesem wird dann das empfangene Codewort, fälschlicher Weise, zugeordnet.
-
-Zum Test der Übertragung wurden 294 Datenwörter in Hamming (7,4) Codierung übertragen. Die Signalkette entsprach hierbei der in Abbildung~\ref{fig:sotware_uart_signal_chain} gezeigten. Die Positionierung des Lasers und der Empfängerdiode der in Abbildung~\ref{fig:photo_lcd_experiment} gezeigten. Der Inhalt der Datenpakete waren die Zahlen von 0 bis 15. Dies reduziert die Aussagekraft des Experiments etwas im Vergleich zu randomisierten Daten, machte aber die Auswertung um einiges leichter. Denn um zwei Bitfehler oder mehr zu erkennen, bei denen ja, wie oben beschrieben, der falsche Wert empfangen wird, müssen die gesendeten Daten am Empfänger bekannt sein. Somit gelangten wir zu der in Abbildung~\ref{fig:sotware_uart_errors} dargestellten Fehlerverteilung.
+Zum Test der Übertragung wurden 294 Datenwörter in (7,4)-Hamming-Codierung übertragen. Der Versuchsaufbau ist in Abbildung~\ref{fig:sotware_uart_signal_chain} dargestellt. Die Positionierung des Lasers und der Empfängerdiode entsprachen dem in Abbildung~\ref{fig:photo_lcd_experiment} gezeigten Aufbau. Der Inhalt der Datenpakete waren die Zahlen von 0 bis 15. Dies reduziert die Aussagekraft des Experiments etwas im Vergleich zu randomisierten Daten, erleichterte aber die Auswertung erheblich. Um nämlich zwei oder mehr Bitfehler erkennen zu können, müssen die gesendeten Daten am Empfänger bekannt sein. Somit gelangten wir zu der in Abbildung~\ref{fig:sotware_uart_errors} dargestellten Fehlerverteilung.
 
 \begin{figure}[H]
   \centering
     \begin{tikzpicture}
     \pie[explode=0.1,color={green,yellow,orange}]{26/0 Fehler, 62/1 Fehler, 12/2+ Fehler}
     \end{tikzpicture}
-  \caption{Fehler bei der Übertragung von 294 Hamming (7,4) codierten, deterministischen Datenworten mit einem \SI{4}{\hertz} UART Signal}
+  \caption{Fehler bei der Übertragung von 294 (7,4)-Hamming-codierten, deterministischen Datenworten mit einem \SI{4}{\hertz}-UART-Signal}
   \label{fig:sotware_uart_errors}
 \end{figure}
 
-Somit sind, nach Fehlerkorrektur durch den Hammingcode, immer noch zwölf Prozent der empfangenen Daten falsch und müssten in einem echten Übertragungssystem durch höhere Layer abgefangen werden. Die Rate der Datenbits berechnet sich wie folgt:
+Demnach sind, nach Fehlerkorrektur durch den Hammingcode, immer noch \SI{12}{\percent} der empfangenen Daten falsch und müssten in einem echten Übertragungssystem durch höhere Layer abgefangen werden. Die Rate der Datenbits berechnet sich wie folgt:
 
 \begin{equation}
  \SI{4}{\bit\per\second} * \frac{\SI{4}{\bit}}{\SI{7}{\bit}} \approx \SI{2.3}{\bit\per\second}
 \end{equation}
 
-Somit wurden über etwa \SI{30}{\centi\meter} mit \SI{2.3}{\bit\per\second} und einer recht hohen Fehlerrate von \SI{12}{\percent} Daten übertragen. Kein wirklich gutes Ergebnis.
+Somit wurden über etwa \SI{30}{\centi\meter} mit \SI{2.3}{\bit\per\second} und einer recht hohen Fehlerrate von \SI{12}{\percent} Daten übertragen --- kein sehr gutes Ergebnis.
 
-Aber warum ist das so? Für eine Erklärungsversuch lohnt es sich die Beobachtungen in Abbildung~\ref{fig:uart_4hz_edge} zu betrachten. Hier sieht man, dass eine zufällig ausgewählte steigende Flanke (\ref{fig:uart_4hz_rising_edge})  \SI{162}{\milli\second} benötigte um durch das System zu propagieren. Eine fallende Flanke (\ref{fig:uart_4hz_falling_edge}) hatte mit \SI{20}{\milli\second} eine deutlich kleinere Verzögerung. Weitere beobachtete Flanken wiesen Verzögerungen in der gleichen Größenordnung, wie die hier dokumentierten, auf
-
-Da, bei einem zufälligen Bit, eine steigende Flanke sowohl an dessen Anfang als auch an dessen Ende auftreten kann, müsste man, um sicher zu gehen mindestens wta \SI{162}{\milli\second} nach Anfang und etwa \SI{162}{\milli\second} vor Ende eines Bits sampeln um Fehler zu vermeiden. Dies führt zu Folgender maximaler Datenrate:
-
-\begin{equation}
-	T_{min} = \SI{162}{\milli\second} * 2 = \SI{324}{\milli\second}
-\end{equation}
-\begin{equation}
-	f_{max} = \frac{1}{T_{min}} = \frac{1}{\SI{324}{\milli\second}} \approx \SI{3}{\bit\per\second}
-\end{equation}
-
-Somit könnte ein Absenken der Bitrate auf \SI{3}{\bit\per\second} in Kombination mit einer intelligenten Wahl des Samplingzeitpunktes eine Hammingcodierung überflüssig machen und somit zu einer höheren Datenrate führen. Hierfür müssen aber die Latenzen bekannt sein und bei der Synchronisation durch die erste fallende Flanke (siehe Anhang~\ref{app:uart_receiver} Zeile 39) miteinbezogen werden.
-
-Bei einem Test wurde, ohne Kenntnis der Latenz, mit einer Datenrate von \SI{2}{\bit\per\second} übertragen. Hierbei traten fast keine Bitfehler auf.
+Doch wie ist dieses schlechte Resultat zu erklären? Für eine Erklärungsversuch lohnt es sich, die Messungen in Abbildung~\ref{fig:uart_4hz_edge} zu betrachten. Hier sieht man, dass eine zufällig ausgewählte steigende Flanke (\ref{fig:uart_4hz_rising_edge}) \SI{162}{\milli\second} benötigt, um durch das System zu propagieren. Eine fallende Flanke (\ref{fig:uart_4hz_falling_edge}) hat mit \SI{20}{\milli\second} eine deutlich kleinere Verzögerung. Weitere beobachtete Flanken wiesen Verzögerungen in der gleichen Größenordnung auf.
 
 \begin{figure}[H]
   \centering
@@ -276,7 +262,20 @@ Bei einem Test wurde, ohne Kenntnis der Latenz, mit einer Datenrate von \SI{2}{\
   \label{fig:uart_4hz_edge}
 \end{figure}
 
-Mit oben genannten Berechnungen ist aber nur eine maximale theoretische Datenrate von etwa \SI{3}{\bit\per\second} möglich. Interessant wäre es daher die Ursache der Latenz zu untersuchen. Hierbei sollte bei verschiedenen Ansteuerungsarten des LCD die erzielte Latenz gemessen werden. Mit den oben genannten Berechnungen lässt sich daraus die mögliche Datenrate berechnen.
+Da bei einem zufälligen Bit eine steigende Flanke sowohl an dessen Anfang als auch an dessen Ende auftreten kann, müsste man demnach mehr als \SI{162}{\milli\second} nach Anfang und \SI{162}{\milli\second} vor Ende eines Bits sampeln, um Fehler ganz zu vermeiden. Dies führt zu folgender maximaler Datenrate:
+
+\begin{equation}
+	T_{min} = \SI{162}{\milli\second} * 2 = \SI{324}{\milli\second}
+\end{equation}
+\begin{equation}
+	f_{max} = \frac{1}{T_{min}} = \frac{1}{\SI{324}{\milli\second}} \approx \SI{3}{\bit\per\second}
+\end{equation}
+
+Ein Absenken der Bitrate auf \SI{3}{\bit\per\second} in Kombination mit einer intelligenten Wahl des Samplingzeitpunktes könnte also eine Hamming-Codierung überflüssig machen und somit zu einer höheren Datenrate führen. Hierfür müssen aber die Latenzen bekannt sein und bei der Synchronisation durch die erste fallende Flanke (siehe Anhang~\ref{app:uart_receiver}, Zeile 39) berücksichtigt werden.
+
+Als wir bei einem Test ohne Kenntnis der Latenz mit einer Datenrate von \SI{2}{\bit\per\second} Daten übertragen haben, traten fast keine Bitfehler auf.
+
+Die mit den oben aufgeführten Berechnungen ermittelte maximale theoretische Datenrate von etwa \SI{3}{\bit\per\second} ist jedoch weiterhin sehr niedrig. Interessant wäre es daher, die Ursache der Latenz zu untersuchen. Hierbei sollte bei verschiedenen Ansteuerungsarten des LCD die erzielte Latenz gemessen werden. Mit den oben genannten Berechnungen lässt sich daraus die mögliche Datenrate berechnen.
 
 \section{Direkt modulierter Laser}
 Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden, um damit digitale Daten zu übertragen. Dazu hatte die andere Gruppe bereits eine Modulationsmethode untersucht, bei der auf einen konstanten Strom ein Datensignal aufgekoppelt wurde.
