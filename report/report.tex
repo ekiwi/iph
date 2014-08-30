@@ -79,11 +79,11 @@ Johannes \textsc{Hauck}
 \section{Aufgabenstellung}
 Wir sind Studenten der Elektrotechnik an der RWTH Aachen und haben unser Viertsemester-Institutsprojekt am Institut für Integrierte Photonik (IPH) absolviert. Im Rahmen dieses Projekts haben wir uns mit der Übertragung von Informationen über optische Links beschäftigt.
 
-Im ersten von zwei Projektabschnitten ging es zunächst um Informationsübermittlung mittels eines extern modulierten Laserstrahls. Anschließend sollte im zweiten Teil des Projekts eine Laserdiode direkt moduliert und auf diese Weise digitale Daten übertragen werden.
+Im ersten von zwei Projektteilen ging es zunächst um Informationsübermittlung mittels eines extern modulierten Laserstrahls. Anschließend sollte im zweiten Abschnitt des Projekts eine Laserdiode direkt moduliert und auf diese Weise digitale Daten übertragen werden.
 
 
 \section{Extern modulierter Laser}
-Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu übertragen, muss mindestens ein Parameter des Laserstrahls extern moduliert werden. Mögliche Modulationsparameter sind beispielsweise die Amplitude oder die Phase des Strahls. In unseren Versuchen kam ausschließlich Amplitudenmodulation zum Einsatz.
+Um mit einem mit konstanter Intensität strahlenden Laser Informationen zu übertragen, muss mindestens ein Parameter des Laserstrahls extern moduliert werden. Mögliche Modulationsparameter sind beispielsweise die Amplitude oder die Phase des Laserstrahls. In unseren Versuchen kam ausschließlich Amplitudenmodulation zum Einsatz.
 
 Wenn die Amplitude eines Laserstrahls extern moduliert werden soll, sind wiederum verschiedene Aufbauten als Modulator denkbar. Ein Lautsprecher mit einem in der Mitte der Membran angebrachten kleinen Spiegel kann je nach Auslenkung der Membran die Intensität des auf der Photodiode des Empfängers auftreffenden Lichts verändern; mit dieser Technik hat sich eine zweite Projektgruppe genauer beschäftigt. Wir haben uns stattdessen für die Variante entschieden, bei der ein einzelner LCD-Pixel\footnote{engl. \textit{liquid crystal display}} zum Einsatz kommt.
 
@@ -97,7 +97,7 @@ Da in unseren Versuchsaufbauten eine Laserdiode als Lichtquelle diente, war das 
 \subsubsection{Übertragungscharakteristik}
 \label{sec:lcd_transfer_characteristics}
 
-Um das Übertragungsverhalten des LCD-Modulators zu ermitteln, haben wir zunächst einen sehr einfachen Versuchsaufbau verwendet: Der Modulator wurde direkt an einen Signalgenerator angeschlossen, als Empfänger diente eine kommerziell erhältliche Photodiode mit integrierter Biasspannung. Mit dem Oszilloskop konnten wir nun die Amplitude des empfangenen Signals bei Übertragung von Sinusschwingungen verschiedener Frequenzen messen.
+Um das Übertragungsverhalten des verwendeten LCD-Modulators zu ermitteln, haben wir zunächst einen sehr einfachen Versuchsaufbau verwendet: Der Modulator wurde direkt an einen \textit{Rigol DG1022}-Signalgenerator angeschlossen, als Empfänger diente eine kommerziell erhältliche Photodiode mit integrierter Biasspannung. Mit dem Oszilloskop konnten wir nun die Amplitude des empfangenen Signals bei Übertragung von Sinusschwingungen verschiedener Frequenzen messen.
 
 \begin{figure}[H]
   \centering
@@ -126,7 +126,7 @@ In unseren Messungen fiel die Amplitude schon im niedrigen zweistelligen Frequen
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.7\textwidth]{../measurements/20140522_sweep/scope_1.png}
+    \includegraphics[width=0.8\textwidth]{../measurements/20140522_sweep/scope_1.png}
   \caption{Blau: AM-modulierte Trägerwelle, Rosa: Empfangenes Signal}
   \label{fig:amplitude_modulation}
 \end{figure}
@@ -170,43 +170,47 @@ In Abbildung \ref{fig:audacity} ist die geringe Übereinstimmung der Wellenforme
 Auch bei reinen Sprachsignalen reichte die Übertragungsqualität bei weitem nicht aus, um Sprachverständlichkeit zu gewährleisten.
 
 \subsection{Übertragung digitaler Daten}
-Nach den Experimenten mit der analogen Signalübertragung, war es von Interesse auch einmal digitale Daten zu übertragen.
+Nach den Experimenten mit der analogen Signalübertragung war es von Interesse, auch einmal digitale Daten über den bestehenden optischen Link zu übertragen.
 
-\subsubsection{USB zu UART Dongle}
-Als erster Ansatz wurden günstige UART \footnote{Universal Asynchronous Transmitter/Receiver} zu USB Adapter benutzt. Diese benutzen \SI{3.3}{\volt}  CMOS Signale, welche mittels eines Komparators auf $\pm$\SI{5}{\volt} Pegel gebracht werden. Mit diesem Pegel kann man direkt auf den Eingang des \textit{DG1022} Signalgenerators von Rigol geben. Bei Amplitudenmodulation führen dann +\SI{5}{\volt} zur maximalen Amplitude und -\SI{5}{\volt}  zu einer Amplitude von fast Null. So ließ sich ein einfaches On-Off Keying umsetzen. Leider war es nicht möglich bei dem UART Adapter Baudraten unter \SI{1}{\kilo\hertz} einzustellen.
+\subsubsection{USB-UART-Dongle}
+In einem ersten Ansatz wurden günstige UART\footnote{Universal Asynchronous Receiver / Transmitter}-USB-Adapter verwendet. Die Adapter arbeiten mit \SI{3.3}{\volt}-CMOS-Signalen, die mittels eines Komparators auf den nötigen Pegel von $\pm$\SI{5}{\volt} gebracht werden. Mit diesem Pegel lässt sich der Eingang des \textit{Rigol DG1022}-Signalgenerators ansteuern. Bei Amplitudenmodulation führen dann +\SI{5}{\volt} zur maximalen Amplitude und -\SI{5}{\volt} zu einer Amplitude von fast Null. So ließ sich ein einfaches On-Off-Keying umsetzen.
 
-Dies war aber deutlich zu schnell, für das LCD, wie man in der Abbildung~\ref{fig:uart_continous_key} sehen kann. Hier wurde eine Taste im Terminal gedrückt gehalten um immer den gleichen Wert zu senden. Man beachte, dass bei dieser und allen folgenden Messungen der grüne Kanal, also die Messung am Ausgang des Transimpedanzverstärkers, auf AC Coupling eingestellt war. Somit sind die Messergebnisse nicht wirklich verlässlich und es lassen sich höchstens Tendenzen feststellen. Hier wäre es interessant diese Messungen noch einmal mit richtigen Einstellungen zu wiederholen.
+Leider war es nicht möglich, bei den verwendeten UART-Adaptern Baudraten unter \SI{1}{\kilo\hertz} einzustellen. Dies war aber deutlich zu schnell für das LCD, wie man in Abbildung~\ref{fig:uart_continous_key} sehen kann. Hier wurde am Computer eine Taste im Terminal gedrückt gehalten, um immer den gleichen Wert zu senden.
 
-Man sieht aber, dass ein kurzes \textit{High} am Ausgang des UART Adapters (blauer Kanal) zu wenig Änderung am Ausgang des Transimpedanzverstärkers führt. Das LCD kann wohl dem Signal nicht folgen.
+Man beachte, dass bei dieser und allen folgenden Messungen der grüne Kanal, also die Messung am Ausgang des Transimpedanzverstärkers, auf AC Coupling eingestellt war. Somit sind die Messergebnisse nicht verlässlich und es lassen sich höchstens Tendenzen feststellen. Hier wäre es interessant, die Messungen noch einmal mit richtigen Einstellungen zu wiederholen.
+
+Dennoch ist klar erkennbar, dass ein kurzes \textit{High} am Ausgang des UART-Adapters (blauer Kanal) zu wenig Änderung am Ausgang des Transimpedanzverstärkers führt. Das LCD kann dem Signal vermutlich nicht schnell genug folgen.
 
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=\textwidth]{../measurements/20140610/uart_continous_key/scope_0.png}
+    \includegraphics[width=0.8\textwidth]{../measurements/20140610/uart_continous_key/scope_0.png}
   \caption{Hier wird kontinuierlich der gleiche Wert mittels UART gesendet.}
   \label{fig:uart_continous_key}
 \end{figure}
 
-\subsubsection{10 Hz Daten}
-Nachdem die UART Daten viel zu schnell waren, wurde als nächstes der Signalgenerator benutzt um Bitsequenzen mit \SI{10}{\hertz} zu erzeugen. Diese wurden ebenfalls mittels On-Off Keying an das LCD gebracht. Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus sich abwechselnden Nullen und Einsen und einem Zufallsmuster. Wie in Abbildung~\ref{fig:uart_10hz} gut zu sehen ist, kann sich das LCD auf eine konstante Frequenz einschwingen. Bei einem Zufallssignal dagegen hängt das Signal von der Vorgeschichte ab. Hier ist gut zu sehen, warum man bei einer Messung, wie z.B. der Erstellung von Augendiagrammen (siehe \ref{sec:eye_diag}) ein Zufallssignal verwendet werden sollte und ein deterministisches Signal nicht ausreicht.
+\subsubsection{Datenübertragung mit 10 Hz}
+Nachdem die UART-Adapter nicht langsam genug Daten liefern konnten, wurde als nächstes ein weiterer Signalgenerator verwendet, der in der Lage war, Bitsequenzen mit einer bestimmten Frequenz zu erzeugen, in unserem Fall mit \SI{10}{\hertz}. Diese Bitsequenzen wurden genutzt, um mittels On-Off-Keying das LCD anzusteuern.
+
+Interessant ist hierbei der Unterschied zwischen einem determinierten Muster aus sich abwechselnden Nullen und Einsen und einem Zufallsmuster. Wie in Abbildung~\ref{fig:uart_10hz} gut zu sehen ist, kann sich das LCD auf eine konstante Frequenz einschwingen. Bei einem Zufallssignal hingegen hängt das Signal von der Vorgeschichte ab. Hier wird deutlich, warum bei Messungen der Signalqualität (z.B. bei der Erstellung von Augendiagrammen, siehe \ref{sec:eye_diag}) ein Zufallssignal verwendet werden sollte und ein deterministisches Signal nicht ausreicht.
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[b]{0.6\textwidth}
+  \begin{subfigure}[b]{0.7\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140610/10Hz_toggle/scope_6.png}
-    \caption{toggle}
+    \caption{Abwechselnde Nullen und Einsen}
     \label{fig:uart_10hz_toggle}
   \end{subfigure}
-  \begin{subfigure}[b]{0.6\textwidth}
+  \begin{subfigure}[b]{0.7\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140610/10Hz_random/scope_4.png}
-    \caption{zufällig}
+    \caption{Zufälliges Signal}
     \label{fig:uart_10hz_random}
   \end{subfigure}
-  \caption{\SI{10}{\hertz} Signal}
+  \caption{Übertragung verschiedener \SI{10}{\hertz}-Signale}
   \label{fig:uart_10hz}
 \end{figure}
 
-\subsubsection{Software UART mit Mikrocontroller}
+\subsubsection{Software-UART mit Mikrocontrollern}
 Um nun endlich digitale Daten zu übertragen, wurde auf einem Mikrocontroller UART mittels Software implementiert, wodurch sich dessen Baudrate beliebig langsam machen lässt. Hierzu wurde ein STM32F4 und ein STM32F3 Discovery Board verwendet. Der Quellcode benutzt die XPCC Bibliothek und auf \url{http://github.com/ekiwi/iph} zu finden. Die wichtigsten funktionalen Bestandteile sind aber auch im Anhang~\ref{app:code} zu finden.
 
 Der Versuchsaufbau ist in Abbildung~\ref{fig:sotware_uart_signal_chain} zu sehen. Die Signalkette entspricht der, die beim ersten Versuch mit den UART Adaptern benutzt wurde.
