@@ -12,8 +12,7 @@
 \pgfplotsset{compat=1.9}
 \normalem
 \parindent 9pt
-
-
+\newcommand{\rom}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 \title{Institutsprojekt: Optischer Link}
 \author{Raphael Brandis \and Kevin Läufer}
 \date{\today}
@@ -365,6 +364,23 @@ Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal n
 
 \section{Fazit}
 
+Auch wenn, insbesondere mit dem LCD, keine besonders großen Erfolge erzielt wurden, so war dies doch ein sehr interessantes und lehrreiches Praktikum.
+Es wurde klar, dass die Beschreibung als LTI System nur eine Näherung ist, welche sich nicht unbedingt gut auf das LCD übertragen lässt. Daraus folgt, dass es wichtig ist, mit Zufallsbitfolgen zu messen um ein Einschwingen zu verhindern. Auch bedeutet ein hörbarer Sinuston, der sich übertragen lässt noch lange nicht, dass man dynamische Musiksignale übertragen kann.
+
+Im Nachhinein fallen einem zahlreiche Dinge ein, die man hätte besser machen können. So sei Studenten, die in Zukunft dieses Praktikum durchführen, empfohlen von Anfang an strukturiert vorzugehen. So sollte man sich erst überlegen, welche Kenndaten des LCDs benötigt werden, dann wie diese zu messen sind. Des Weiteren ist es wichtig, den Aufbau genau zu dokumentieren um Wiederholbarkeit sicherzustellen. So haben wir es leider verpasst den genauen Aufbau bei Aufnahme der Übertragungsfunktion festzuhalten.
+Auch wäre es noch interessant gewesen ein paar Messreihen mit Verschiedener Ansteuerung des LCDs aufzunehmen. Hier wäre Latenz (also Gruppenlaufzeit) und Amplitudenübertragungsfunktion interessant. Unter anderem könnte man den LCD mit verschiedenen Amplituden und mit oder ohne hochfrequenter Trägerfrequenz ansteuern.
+
+Interessant war auch jeden Fall der praktische Einsatz von Kenntnissen aus \textit{Grundgebiete der Informatik \rom{2}} bei der Übertragung von Daten mittels eines Hammingcodes. Hier zeigte sich, dass eine niedrigere Datenrate effizienter sein kann, da weniger Paritätsbits benötigt werden. Für die Übertragung von digitalen Daten wäre es bei einer erneuten Durchführung des Praktikums interessant, nach Charakterisierung des LCDs, eine Übertragungsstrecke mit niedrigerer Latenz zu konstruieren.
+
+Bei der direkten Modulation des Lasers empfiehlt es sich, wie oben genannt, die Schaltung des Senders zu optimieren und dann fest aufzubauen, um besser Messungen durchführen zu können. Beim Empfänger mit \textit{AD8015} sollte man Messungen mit einer modulierten Lichtquelle, deren Bandbreite bekannt ist, durchführen, um dessen Maximale Bandbreite auszutesten.
+
+Gelohnt hat sich auf jeden Fall auch, in der Exkursionswoche für zwei ganze Tage am Projekt zu arbeiten. So kann man auch einmal etwas größere Schritte fertig bekommen, ohne sich jede Woche erneut hineindenken zu müssen. Wir raten aber davon ab, dass Praktikum an einem Stück durchziehen zu wollen, da dann nicht genug Zeit ist um Teile zu bestellen oder Platinen zu fertigen.
+
+Zu guter Letzt möchten wir den zukünftigen Teilnehmern dieses Praktikums, viel Erfolg wünschen. Ihr könnt euch auf jeden Fall auf die Unterstützung des Instituts verlassen. Egal ob Ihr Fragen habt, Hilfe oder Teile für die Durchführung braucht. Wendet euch einfach an euren Betreuer.
+
+Wir hoffen euch mit unserem Projektbericht geholfen zu haben und würden uns freuen eure Ergebnisse in einem Jahr begutachten zu können.
+
+Viel Spaß!
 
 \appendix
 \section{C++ Quellcode Ausschnitte}
