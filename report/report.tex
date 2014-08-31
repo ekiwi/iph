@@ -258,7 +258,7 @@ Doch wie ist dieses schlechte Resultat zu erklären? Für eine Erklärungsversuc
     \caption{fallende Flanke: \SI{20}{\milli\second}}
     \label{fig:uart_4hz_falling_edge}
   \end{subfigure}
-  \caption{Verzögerung bei einem \SI{4}{\hertz} UART Signal; Quellensignal in gelb und invertiertes Ausgangssignal in grün}
+  \caption{Verzögerung bei einem \SI{4}{\hertz}-UART-Signal; Quellensignal in gelb und invertiertes Ausgangssignal in grün}
   \label{fig:uart_4hz_edge}
 \end{figure}
 
@@ -283,15 +283,10 @@ Im zweiten Teil des Projekts sollte ein Diodenlaser direkt moduliert werden, um 
 Unser Ziel war es, eine Stromquelle direkt mit einem Datensignal zu modulieren und danach Empfängerdesigns zu evaluieren.
 
 
-\subsection{Sender: modulierte Konstantstromquelle}
+\subsection{Sender: Modulierte Konstantstromquelle}
 \label{sec:direct_tx}
-Auf Grund der exponentiellen Kennlinie einer Laserdiode muss diese mit einem konstanten Strom versorgt werden. Eine einfache Konstantstromquelle kann mit zwei Bipolartransisoren aufgebaut werden. Der Strom $I_{D1}$ , der durch die Diode fließt entspricht hierbei in etwa dem Strom $I_{R1}$, der durch den Widerstand $R1$ fließt. An diesem müssen, durch den Transistor  $Q2$ vorgegeben, etwa \SI{0.7}{\volt} abfallen, wodurch sich ungefähr folgender Strom einstellt:
 
-\begin{equation}
-I_{D1} = I_{R1} = \frac{U_{R1}}{R1} \approx \frac{\SI{0.7}{\volt}}{R1}
-\end{equation}
-
-Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widerstand - die Kollektor-Emitter-Spannung $U_{CE2}$ des Transistor $Q2$ vorgegeben wird. Dieser Aufbau ist in Abbildung~\ref{fig:modulated_current_source} zu sehen.
+Aufgrund der exponentiellen Kennlinie einer Laserdiode muss diese mit einem konstanten Strom versorgt werden. Eine einfache Konstantstromquelle lässt sich mit zwei Bipolartransistoren aufbauen, wie in Abbildung~\ref{fig:modulated_current_source} zu sehen ist.
 
 \begin{figure}[H]
   \centering
@@ -300,24 +295,34 @@ Diese Quelle lässt sich leicht ein und aus schalten in dem - über einen Widers
   \label{fig:modulated_current_source}
 \end{figure}
 
+Der Strom $I_{D1}$, der durch die Diode fließt, entspricht hierbei in etwa dem Strom $I_{R1}$, der durch den Widerstand $R1$ fließt. An diesem müssen, durch den Transistor $Q2$ vorgegeben, etwa \SI{0.7}{\volt} abfallen, wodurch sich folgender Strom einstellt:
+
+\begin{equation}
+I_{D1} = I_{R1} = \frac{U_{R1}}{R1} \approx \frac{\SI{0.7}{\volt}}{R1}
+\end{equation}
+
+Diese Konstantstromquelle lässt sich leicht ein- und ausschalten, indem über einen Widerstand die Summe der Basis-Emitter-Spannungen beider Transistoren, $U_{BE1} + U_{BE2}$, vorgegeben wird.
+
 \begin{figure}[H]
   \centering
     \includegraphics[width=1.0\textwidth]{../spice/current_input_v_current_out_trans.png}
-  \caption{Transientenanalyse der modulierten Stromquelle.}
+  \caption{Transientenanalyse der modulierten Stromquelle}
   \label{fig:modulated_current_source_plot}
 \end{figure}
 
 
-Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die Diode von der Eingangsspannung $U_2$ abhängt. Die in Abbildung~\ref{fig:modulated_current_source_plot} dargestellten Ergebnisse wurde aber mit einem vereinfachten Transistormodell simuliert, sind also mit Vorsicht zu genießen. Das Prinzip wird darin aber gut veranschaulicht.
+Eine Simulation des Aufbaus in LTSpice zeigt, dass der Strom $I_{D1}$ durch die Diode von der Eingangsspannung $U_2$ abhängt. Bei den in Abbildung~\ref{fig:modulated_current_source_plot} dargestellten Ergebnissen wurde zwar mit einem vereinfachten Transistormodell simuliert, sie sind also mit Vorsicht zu genießen. Das Funktionsprinzip wird durch die Simulation dennoch gut veranschaulicht.
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=1.0\textwidth]{img/ring_20MHz.png}
-  \caption{Reflexionen bei einem \SI{20}{\mega\hertz} Eingangssignal.}
+  \caption{Reflexionen bei einem \SI{20}{\mega\hertz}-Eingangssignal}
   \label{fig:ring_20mhz}
 \end{figure}
 
-Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:direct_rx}). Es gab jedoch, auf Grund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung, Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant. Auch verhält sich die Schaltung bei Frequenzen im Megahertzbereich nicht genauso wie in der Simulation, so entspricht die Spannung am Widerstand $R1$ nicht den erwarteten \SI{0.7}{\volt}. Hier wären eine Verbesserung der Spice Simulation durch die Auswahl eines passenden Transistormodells und bessere Modellierung der Quelle sowie weitere empirische Versuche angebracht.
+Mit diesem Aufbau ließen sich in unseren Versuchen recht schnelle Übertragungen von zufälligen Bits realisieren (siehe auch Abschnitt~\ref{sec:direct_rx}). Es gab jedoch aufgrund der fehlenden Terminierung auf der Eingangsseite unserer Schaltung Probleme mit Reflexionen auf der Leitung (siehe Abbildung~\ref{fig:ring_20mhz}). Hier wäre eine Untersuchung verschiedener Terminierungsvarianten interessant.
+
+Auch verhält sich die Schaltung bei Frequenzen im Megahertzbereich immer weniger wie in der Simulation: So entspricht die Spannung am Widerstand $R1$ nicht mehr den erwarteten \SI{0.7}{\volt}. Hier wären eine Verbesserung der Spice-Simulation durch die Auswahl eines passenden Transistormodells und durch bessere Modellierung der Quelle sowie weitere empirische Versuche angebracht.
 
 \subsection{Photodiode mit Lastwiderstand als Empfänger}
 \label{sec:direct_rx}
@@ -334,54 +339,59 @@ Mit diesem Aufbau ließen sich recht schnelle Übertragungen von zufälligen Bit
     \caption{\SI{50}{\ohm}}
     \label{fig:direct_rx_50_R}
   \end{subfigure}  
-  \caption{\SI{20}{\kilo\hertz} Eingangssignal mit unterschiedlichem Lastwiderstand}
+  \caption{Grün: Gesendetes \SI{20}{\kilo\hertz}-Rechtecksignal; Rosa: Empfangenes Signal bei unterschiedlichem Lastwiderstand}
   \label{fig:direct_rx}
 \end{figure}
 
-Als Empfänger nutzten wir zunächst, zum Testen der Sendeschaltung, eine Photodiode mit Biasspannung und umschaltbarem Lastwiderstand (NewFocus 1623).
+Zum Testen der Sendeschaltung nutzten wir zunächst eine Photodiode mit Biasspannung und umschaltbarem Lastwiderstand (\textit{NewFocus 1623}) als Empfänger.
 
-In der Abbildung~\ref{fig:direct_rx} kann man die Abhängigkeit des Ausgangssignals vom Lastwiderstand sehen. Dazu wurde der Ausgang der Photodiode mit einem hochohmig terminierten Eingang eines Oszilloskops verbunden und auf den Eingang unserer Sendeschaltung~\ref{sec:direct_tx} ein \SI{20}{\kilo\hertz} Rechtecksignal gegeben. Bei einem hohen Lastwiderstand (\ref{fig:direct_rx_10k_R}) erhöht sich die Verstärkung: die Amplitude ist hier in etwa \SI{10}{\milli\volt}. Jedoch sinkt die Bandbreite, was sich an sehr langen Anstiegs- und Abfallzeiten und der daraus resultierenden Dreiecksform des Ausgangssignals bemerkbar macht. Mit einem kleineren Lastwiderstand (\ref{fig:direct_rx_50_R}) ergibt sich ein weniger verzerrtes Signal, die Amplitude beträgt jedoch nur noch in etwa \SI{1}{\milli\volt}.
+In Abbildung~\ref{fig:direct_rx} ist die Abhängigkeit des Ausgangssignals vom Lastwiderstand zu erkennen. Zur Aufnahme dieser Messungen wurde der Ausgang der Photodiode mit einem hochohmig terminierten Eingang eines Oszilloskops verbunden und auf den Eingang unserer Sendeschaltung ein \SI{20}{\kilo\hertz}-Rechtecksignal gegeben. Bei einem hohen Lastwiderstand (\ref{fig:direct_rx_10k_R}) erhöht sich die Verstärkung: Die Amplitude beträgt hier in etwa \SI{10}{\milli\volt}. Jedoch sinkt die Bandbreite, was sich durch sehr lange Anstiegs- und Abfallzeiten und die daraus resultierende Dreiecksform des Ausgangssignals bemerkbar macht. Mit einem kleineren Lastwiderstand (\ref{fig:direct_rx_50_R}) ergibt sich ein weniger verzerrtes Signal, die Amplitude beträgt jedoch nur noch in etwa \SI{1}{\milli\volt}.
 
-Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz} Signals weisen darauf hin, dass für schnellere Signale ein besserer Verstärker benötigt wird.
+Die kleinen Amplituden und die Verzerrung beim Empfang eines \SI{20}{\kilo\hertz}-Signals weisen darauf hin, dass für schnellere Signale ein besserer Verstärker benötigt wird.
 
 \subsection{Empfänger mit integriertem \textit{AD8015} Transimpedanzverstärker}
-Anstatt selbst eine Empfängerschaltung aufzubauen, bietet es sich an, einen integrierten Transimpedanzverstärker wie den \textit{AD8015} zu benutzen. Dieser ist von Grund auf dazu konzipiert, den Photostrom in eine proportional verstärkte Spannung zu wandeln, welche differentiell mit 50 Ohm Impedanz am Ausgang abgegriffen werden kann. Dieser benötigt nur wenige externe Komponenten was zu einer einfachen Schaltung führt (\ref{fig:receiver_sch})
-
+\label{sec:direct_rx_tia}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.7\textwidth]{img/receiver.pdf}
-  \caption{Beschaltung des \textit{AD8015} Transimpedanzverstärkers}
+  \caption{Beschaltung des \textit{AD8015}-Transimpedanzverstärkers}
   \label{fig:receiver_sch}
 \end{figure}
 
-Mit diesem Aufbau lassen sich auch schnelle Signale verstärken was in der Betrachtung der Augendiagramme zu sehen ist.
+Anstatt selbst eine Empfängerschaltung aufzubauen, bietet es sich an, einen integrierten Transimpedanzverstärker wie den \textit{AD8015} zu verwenden. Dieser ist von Grund auf dafür konzipiert, den Photostrom in eine proportional verstärkte Spannung zu wandeln, die differentiell mit einer Impedanz von \SI{50}{\ohm} am Ausgang abgegriffen werden kann. Es werden nur wenige externe Komponenten benötigt, was zu einer einfachen Schaltung führt (siehe Abbildung \ref{fig:receiver_sch}).
+
+Mit diesem Aufbau lassen sich auch schnelle Signale verstärken, wie in der Betrachtung der Augendiagramme im nächsten Abschnitt deutlich wird.
 
 
 \subsection{Augendiagramme}
 \label{sec:eye_diag}
-Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), dann kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können. Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
+Augendiagramme können mit dem Oszilloskop aufgenommen werden. Hierzu wird der Trigger auf steigende und fallende Flanken des Signals eingestellt und Persistenz aktiviert. Hierdurch erhält man eine Überlagerung von steigenden und fallenden Flanken. Verbleibt zwischen diesen eine klar erkennbare Öffnung (das Auge), kann man davon ausgehen, dass die Bits auch von einer Empfängerschaltung richtig interpretiert werden können.
+
+Wichtig ist, als Eingangssignal eine Zufallssequenz von Bits zu wählen, damit sich das System nicht einfach auf eine Frequenz einschwingt.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.7\textwidth]{../photos/IMG_20140710_184030.jpg}
-  \caption{Versuchsaufbau zur Bestimmung der Augendiagramme.}
+    \includegraphics[width=0.6\textwidth]{../photos/IMG_20140710_184030.jpg}
+  \caption{Versuchsaufbau zur Erstellung der Augendiagramme}
   \label{fig:eye_setup}
 \end{figure}
 
-In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} und Abbildung~\ref{fig:eye_plots_fast} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung mit dem \textit{AD8015} TIA aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
+In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} und Abbildung~\ref{fig:eye_plots_fast} mit der Sendeschaltung aus Abschnitt~\ref{sec:direct_tx} und der Empfängerschaltung aus Abschnitt \ref{sec:direct_rx_tia} aufgenommen. Der Aufbau ist in Abbildung~\ref{fig:eye_setup} zu sehen.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/01MHz.png}
     \caption{\SI{1}{\mega\hertz}}
+    \label{fig:eye_plots_slow_1M}
   \end{subfigure}  
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/10MHz.png}
     \caption{\SI{10}{\mega\hertz}}
+    \label{fig:eye_plots_slow_10M}
   \end{subfigure}  
-  \caption{Augendiagramme}
+  \caption{Augendiagramme (gesendetes Signal in grün)}
   \label{fig:eye_plots_slow}
 \end{figure}
 
@@ -390,60 +400,61 @@ In unserem Fall wurden die Augendiagramme in Abbildung~\ref{fig:eye_plots_slow} 
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/30MHz.png}
     \caption{\SI{30}{\mega\hertz}}
-  \end{subfigure}  
+    \label{fig:eye_plots_fast_30M}
+  \end{subfigure}
   \begin{subfigure}[b]{0.6\textwidth}
     \includegraphics[width=\textwidth]{../measurements/20140710/eye_plots/50MHz.png}
     \caption{\SI{50}{\mega\hertz}}
+    \label{fig:eye_plots_fast_50M}
   \end{subfigure}  
-  \caption{Augendiagramme}
+  \caption{Augendiagramme (gesendetes Signal in grün)}
   \label{fig:eye_plots_fast}
 \end{figure}
 
 
-
-Ein \SI{1}{\mega\hertz} Bitsignal wird ohne Probleme übertragen, auch bei einem \SI{10}{\mega\hertz} Signal ist die Augenöffnung noch unproblematisch. Ein \SI{30}{\mega\hertz} Signal hat bereits eine deutlich kleiner Öffnung, sollte aber auch noch funktionieren. Bei einem \SI{50}{\mega\hertz} Signal scheint die Grenze erreicht; hier ist keine distinkte Öffnung mehr zu erkennen. 
+Ein \SI{1}{\mega\hertz}-Bitsignal wird ohne Probleme übertragen (\ref{fig:eye_plots_slow_1M}), auch bei einem \SI{10}{\mega\hertz}-Signal ist die Augenöffnung noch unproblematisch (\ref{fig:eye_plots_slow_10M}). Ein \SI{30}{\mega\hertz}-Signal hat bereits eine deutlich kleinere Öffnung (\ref{fig:eye_plots_fast_30M}), die Übertragung sollte hier aber auch noch funktionieren. Bei \SI{50}{\mega\hertz} scheint die Grenze erreicht; hier ist eine distinkte Öffnung kaum noch zu erkennen (\ref{fig:eye_plots_fast_50M}). 
 
 \subsection{Ergebnisse}
-Mit dem System aus selbst gebauter modulierbarer Stromquelle und \textit{AD8015} Verstärker lassen sich mit Signale mit einer Geschwindigkeit von bis zu \SI{50}{\mega\hertz} gut übertragen. Die Diode ohne Verstärker ist in diesem Geschwindigkeitsbereich eher nicht mehr zu gebrauchen.
+Mit dem System aus selbst gebauter modulierbarer Stromquelle und \textit{AD8015}-Verstärker lassen sich Signale mit einer Geschwindigkeit von bis zu \SI{50}{\mega\hertz} gut übertragen. Die Photodiode ohne Verstärker ist hingegen in diesem Geschwindigkeitsbereich nicht mehr zu gebrauchen.
 
-Bezüglich der Sendeschaltung sollte man als nächstes versuchen, diese, wie oben genannt, zu verbessern um dann eine Platine mit dieser aufzubauen. Zusammen mit einem Gehäuse lässt sich damit ein Versuchsaufbau erstellen, mit dem die Schaltung noch besser untersucht und der Laser auch in eine Glasfaser eingekoppelt werden kann.
+Bezüglich des Senders sollte man als nächstes versuchen, die verwendete Schaltung wie in Abschnitt \ref{sec:direct_tx} beschrieben zu verbessern, um sie dann auf einer Platine aufzubauen. Zusammen mit einem Gehäuse ließe sich damit ein Versuchsaufbau erstellen, mit dem die Schaltung noch besser untersucht und der Laser auch in eine Glasfaser eingekoppelt werden könnte.
 
-Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal nicht verändert werden. Es wäre aber interessant diesen noch besser zu vermessen. Unter anderem sollte mit einer professionellen Lichtquelle untersucht werden, bis zu welchen Frequenzen verstärkt werden kann. Bisher wurde hier nur das Gesamtsystem aus Empfänger und Sender untersucht, was es erschwert, eindeutige Aussagen über die Einzelkomponente zu machen. Interessant könnte es auch sein, die \textit{AD8015} Schaltung mit verschiedenen Photodioden aufzubauen und zu untersuchen, wie sich diese auf das Verstärkungsverhalten auswirken.
+Der Empfänger mit \textit{AD8015} hat sich bewährt und muss wohl erst einmal nicht verändert werden. Es wäre aber interessant, ihn noch besser zu vermessen. Unter anderem sollte mit einer professionellen Lichtquelle untersucht werden, bis zu welchen Frequenzen verstärkt werden kann. Bisher wurde hier nur das Gesamtsystem aus Empfänger und Sender untersucht, was es erschwert, eindeutige Aussagen über die Einzelkomponente zu treffen. Interessant könnte es auch sein, die \textit{AD8015}-Schaltung mit verschiedenen Photodioden aufzubauen und zu untersuchen, wie sich diese auf das Verstärkungsverhalten auswirken.
 
 \section{Fazit}
 
-Auch wenn, insbesondere mit dem LCD, keine besonders großen Erfolge erzielt wurden, so war dies doch ein sehr interessantes und lehrreiches Praktikum.
-Es wurde klar, dass die Beschreibung als LTI System nur eine Näherung ist, welche sich nicht unbedingt gut auf das LCD übertragen lässt. Daraus folgt, dass es wichtig ist, mit Zufallsbitfolgen zu messen um ein Einschwingen zu verhindern. Auch bedeutet ein hörbarer Sinuston, der sich übertragen lässt noch lange nicht, dass man dynamische Musiksignale übertragen kann.
+Auch wenn wir, insbesondere mit dem LCD, keine besonders großen Erfolge erzielen konnten, so war das Praktikum für uns dennoch sehr interessant und lehrreich. Es wurde klar, dass die Beschreibung als LTI-System nur eine Näherung ist, die sich nicht ohne Weiteres auf das LCD übertragen lässt. Es ist daher wichtig, mit Zufallsbitfolgen zu messen, um ein Einschwingen zu verhindern. Auch bedeutet ein einzelner Sinuston, der sich in guter Qualität übertragen lässt, noch lange nicht, dass man dynamische Musiksignale, die Frequenzen aus dem gesamten hörbaren Spektrum enthalten, übertragen kann.
+\\\\
+Im Nachhinein fallen einem zahlreiche Dinge ein, die man hätte besser machen können. So sei Studenten, die in Zukunft dieses Praktikum durchführen, empfohlen, von Anfang an strukturiert vorzugehen. So sollte man sich erst überlegen, welche Kenndaten des LCDs benötigt werden, und anschließend, wie diese zu messen sind. Sehr wichtig ist außerdem, immer daran zu denken, den Versuchsaufbau zu einer Messung genau zu dokumentieren, um Wiederholbarkeit sicherzustellen. So haben wir es leider versäumt, den genauen Aufbau bei Aufnahme der ersten Messungen mit dem LCD festzuhalten.
 
-Im Nachhinein fallen einem zahlreiche Dinge ein, die man hätte besser machen können. So sei Studenten, die in Zukunft dieses Praktikum durchführen, empfohlen von Anfang an strukturiert vorzugehen. So sollte man sich erst überlegen, welche Kenndaten des LCDs benötigt werden, dann wie diese zu messen sind. Des Weiteren ist es wichtig, den Aufbau genau zu dokumentieren um Wiederholbarkeit sicherzustellen. So haben wir es leider verpasst den genauen Aufbau bei Aufnahme der Übertragungsfunktion festzuhalten.
-Auch wäre es noch interessant gewesen ein paar Messreihen mit Verschiedener Ansteuerung des LCDs aufzunehmen. Hier wäre Latenz (also Gruppenlaufzeit) und Amplitudenübertragungsfunktion interessant. Unter anderem könnte man den LCD mit verschiedenen Amplituden und mit oder ohne hochfrequenter Trägerfrequenz ansteuern.
+Darüber hinaus wäre interessant gewesen, einige Messreihen mit unterschiedlichen Arten der Ansteuerung des LCDs aufzunehmen. Hier wären Latenz (also Gruppenlaufzeit) und Amplitudenübertragungsfunktion interessant. Unter anderem könnte man den LCD mit verschiedenen Amplituden sowie mit oder ohne hochfrequenter Trägerwelle ansteuern.
 
-Interessant war auch jeden Fall der praktische Einsatz von Kenntnissen aus \textit{Grundgebiete der Informatik \rom{2}} bei der Übertragung von Daten mittels eines Hammingcodes. Hier zeigte sich, dass eine niedrigere Datenrate effizienter sein kann, da weniger Paritätsbits benötigt werden. Für die Übertragung von digitalen Daten wäre es bei einer erneuten Durchführung des Praktikums interessant, nach Charakterisierung des LCDs, eine Übertragungsstrecke mit niedrigerer Latenz zu konstruieren.
+Interessant war auch der praktische Einsatz von Kenntnissen aus \textit{Grundgebiete der Informatik \rom{2}} bei der Übertragung von Daten mittels eines Hamming-Codes. Hier zeigte sich, dass eine niedrigere Übertragungsgeschwindigkeit effizienter sein kann, da weniger Fehler erzeugt und somit weniger Paritätsbits benötigt werden. Für die Übertragung von digitalen Daten wäre es bei einer erneuten Durchführung des Praktikums interessant, nach Charakterisierung des LCDs eine Übertragungsstrecke mit niedrigerer Latenz zu konstruieren.
 
-Bei der direkten Modulation des Lasers empfiehlt es sich, wie oben genannt, die Schaltung des Senders zu optimieren und dann fest aufzubauen, um besser Messungen durchführen zu können. Beim Empfänger mit \textit{AD8015} sollte man Messungen mit einer modulierten Lichtquelle, deren Bandbreite bekannt ist, durchführen, um dessen Maximale Bandbreite auszutesten.
+Bei der direkten Modulation des Lasers empfiehlt es sich, die Schaltung des Senders wie oben beschrieben zu optimieren und dann fest aufzubauen, um Messungen einfacher und genauer durchführen zu können. Beim Empfänger mit \textit{AD8015}-Verstärker könnte man Messungen mit einer modulierten Lichtquelle, deren Bandbreite bekannt ist, durchführen, um seine maximale Bandbreite zu ermitteln.
+\\\\
+Gelohnt hat sich definitiv auch, in der Exkursionswoche für zwei ganze Tage am Projekt zu arbeiten. So kann man einmal etwas mehr am Stück erledigen, ohne sich Woche für Woche erneut in das Projekt hineindenken zu müssen. Wir raten aber davon ab, dass Praktikum komplett an einem Stück durchzuführen, da dann nicht genug Zeit bleibt, um Teile zu bestellen oder Platinen fertigen zu lassen.
+\\\\
+Zu guter Letzt möchten wir den zukünftigen Teilnehmern dieses Praktikums viel Erfolg wünschen. Ihr könnt euch auf jeden Fall auf die Unterstützung des Instituts verlassen. Egal ob ihr Fragen habt, Hilfe oder Teile für die Durchführung braucht, wendet euch einfach an euren Betreuer.
 
-Gelohnt hat sich auf jeden Fall auch, in der Exkursionswoche für zwei ganze Tage am Projekt zu arbeiten. So kann man auch einmal etwas größere Schritte fertig bekommen, ohne sich jede Woche erneut hineindenken zu müssen. Wir raten aber davon ab, dass Praktikum an einem Stück durchziehen zu wollen, da dann nicht genug Zeit ist um Teile zu bestellen oder Platinen zu fertigen.
-
-Zu guter Letzt möchten wir den zukünftigen Teilnehmern dieses Praktikums, viel Erfolg wünschen. Ihr könnt euch auf jeden Fall auf die Unterstützung des Instituts verlassen. Egal ob Ihr Fragen habt, Hilfe oder Teile für die Durchführung braucht. Wendet euch einfach an euren Betreuer.
-
-Wir hoffen euch mit unserem Projektbericht geholfen zu haben und würden uns freuen eure Ergebnisse in einem Jahr begutachten zu können.
-
+Wir hoffen, dass wir euch mit unserem Projektbericht helfen konnten und würden uns freuen, in einem Jahr eure Ergebnisse zu sehen.
+\\\\
 Viel Spaß!
 
 \appendix
-\section{C++ Quellcode Ausschnitte}
+\section{C++-Quellcode-Ausschnitte}
 \label{app:code}
 
-\subsection{Hamming Code}
+\subsection{Hamming-Code}
 \label{app:code_hamming}
 \inputminted[label=hamming.hpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/hamming.hpp}
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/hamming.hpp}
 
-\subsection{Software UART: Quelle}
+\subsection{Software-UART: Quelle}
 \inputminted[label=transmitter.cpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/source/transmitter.cpp}
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/source/transmitter.cpp}
 
-\subsection{Software UART: Empfänger}
+\subsection{Software-UART: Empfänger}
 \label{app:uart_receiver}
 \inputminted[label=receiver.cpp,linenos,tabsize=4,fontsize=\normalsize,frame=lines,rulecolor=\color{gray!70},framerule=1pt]{c++}{../stm32/lcd_transmitter/sink/receiver.cpp}
 \url{https://github.com/ekiwi/iph/blob/master/stm32/lcd\_transmitter/sink/receiver.cpp}
